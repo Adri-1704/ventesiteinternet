@@ -97,15 +97,17 @@ export default async function Home() {
       {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <span className="text-lg font-bold">
-            Vente<span className="text-emerald-400">SiteInternet</span>.ch
+          <span className="text-base sm:text-lg font-bold">
+            Vente<span className="text-emerald-400">Site</span>
+            <span className="hidden sm:inline"><span className="text-emerald-400">Internet</span>.ch</span>
+            <span className="sm:hidden">.ch</span>
           </span>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 sm:gap-6">
             <a href="#annonces" className="hidden sm:block text-sm text-neutral-400 hover:text-white">Annonces</a>
             <a href="#pricing" className="hidden sm:block text-sm text-neutral-400 hover:text-white">Tarifs</a>
-            <Link href="/auth/login" className="text-sm text-neutral-400 hover:text-white">Connexion</Link>
-            <Link href="/auth/signup" className="rounded-full bg-emerald-500 px-5 py-2 text-sm font-semibold text-white hover:bg-emerald-600">
-              Vendre mon site
+            <Link href="/auth/login" className="hidden sm:block text-sm text-neutral-400 hover:text-white">Connexion</Link>
+            <Link href="/auth/signup" className="rounded-full bg-emerald-500 px-4 sm:px-5 py-2 text-xs sm:text-sm font-semibold text-white hover:bg-emerald-600">
+              Vendre
             </Link>
           </div>
         </div>
