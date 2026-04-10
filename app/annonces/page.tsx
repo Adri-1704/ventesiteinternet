@@ -1,7 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { createClient } from "@/app/lib/supabase/client";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 interface Listing {
   id: string;
@@ -42,10 +43,15 @@ function timeAgo(dateStr: string) {
 }
 
 export default function Annonces() {
+  return <Suspense><AnnoncesContent /></Suspense>;
+}
+
+function AnnoncesContent() {
   const supabase = createClient();
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
-  const [category, setCategory] = useState("");
+  const searchParams = useSearchParams();
+  const [category, setCategory] = useState(searchParams.get("cat") || "");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("recent");
 
