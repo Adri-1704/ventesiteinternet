@@ -1,11 +1,26 @@
 import Link from "next/link";
+import { createClient } from "@supabase/supabase-js";
 
-const categories = [
-  { icon: "🖥️", name: "Sites vitrine", count: 0, slug: "vitrine" },
-  { icon: "🛒", name: "E-commerce", count: 0, slug: "ecommerce" },
-  { icon: "⚡", name: "SaaS", count: 0, slug: "saas" },
-  { icon: "🌐", name: "Noms de domaine", count: 0, slug: "domaines" },
+const categorySlugs = ["vitrine", "ecommerce", "saas", "domaines"];
+const categoryMeta = [
+  { icon: "🖥️", name: "Sites vitrine", slug: "vitrine" },
+  { icon: "🛒", name: "E-commerce", slug: "ecommerce" },
+  { icon: "⚡", name: "SaaS", slug: "saas" },
+  { icon: "🌐", name: "Noms de domaine", slug: "domaines" },
 ];
+
+async function getCategoryCounts() {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+  const counts: Record<string, number> = {};
+  for (const slug of categorySlugs) {
+    const { count } = await supabase.from("vsi_listings").select("id", { count: "exact", head: true }).eq("status", "published").eq("category", slug);
+    counts[slug] = count || 0;
+  }
+  return counts;
+}
 
 const features = [
   {
@@ -74,7 +89,9 @@ function formatCHF(n: number) {
   return n.toLocaleString("fr-CH", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-export default function Home() {
+export default async function Home() {
+  const counts = await getCategoryCounts();
+  const categories = categoryMeta.map((c) => ({ ...c, count: counts[c.slug] || 0 }));
   return (
     <div className="min-h-screen">
       {/* Nav */}
