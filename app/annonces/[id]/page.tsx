@@ -78,12 +78,6 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
               <p className="text-lg font-bold">{listing.age_years} an{listing.age_years > 1 ? "s" : ""}</p>
             </div>
           )}
-          {listing.tech_stack && (
-            <div className="rounded-xl border border-white/5 bg-[#111] p-4">
-              <p className="text-[10px] text-neutral-500 mb-1">Stack technique</p>
-              <p className="text-sm font-medium">{listing.tech_stack}</p>
-            </div>
-          )}
         </div>
 
         {/* Description */}
