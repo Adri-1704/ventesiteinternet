@@ -18,6 +18,35 @@ function formatCHF(n: number) {
   return n?.toLocaleString("fr-CH", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || "—";
 }
 
+function Stat({ label, value, suffix }: { label: string; value: string | number | null | undefined; suffix?: string }) {
+  if (!value || value === 0 || value === "0") return null;
+  return (
+    <div className="rounded-xl border border-white/5 bg-[#111] p-4">
+      <p className="text-[10px] text-neutral-500 mb-1">{label}</p>
+      <p className="text-sm font-bold">{typeof value === "number" ? formatCHF(value) : value}{suffix ? ` ${suffix}` : ""}</p>
+    </div>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="mb-8">
+      <h2 className="mb-3 text-sm font-semibold text-emerald-400">{title}</h2>
+      {children}
+    </div>
+  );
+}
+
+function InfoBlock({ label, value }: { label: string; value: string | null | undefined }) {
+  if (!value) return null;
+  return (
+    <div className="rounded-xl border border-white/5 bg-[#111] p-4">
+      <p className="text-[10px] text-neutral-500 mb-1">{label}</p>
+      <p className="text-sm leading-relaxed text-neutral-300 whitespace-pre-wrap">{value}</p>
+    </div>
+  );
+}
+
 export default async function ListingPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
@@ -33,21 +62,21 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
   return (
     <div className="min-h-screen pb-20">
       <header className="sticky top-0 z-40 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-4">
           <Link href="/" className="text-lg font-bold">Vente<span className="text-emerald-400">SiteInternet</span>.ch</Link>
           <Link href="/annonces" className="text-sm text-neutral-400 hover:text-white">← Toutes les annonces</Link>
         </div>
       </header>
 
-      <div className="mx-auto max-w-4xl px-6 pt-8">
-        {/* Badge */}
-        <div className="mb-4 flex items-center gap-3">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 pt-8">
+        {/* Badge + views */}
+        <div className="mb-4 flex items-center gap-3 flex-wrap">
           <span className="rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-neutral-400">
             {CATEGORY_LABELS[listing.category] || listing.category}
           </span>
-          {listing.views > 0 && (
-            <span className="text-xs text-neutral-500">{listing.views} vues</span>
-          )}
+          {listing.sector && <span className="rounded-full bg-white/5 px-3 py-1 text-xs text-neutral-500">{listing.sector}</span>}
+          {listing.creation_date && <span className="text-xs text-neutral-500">Créé en {listing.creation_date}</span>}
+          {listing.views > 0 && <span className="text-xs text-neutral-500">{listing.views} vues</span>}
         </div>
 
         {/* Title */}
@@ -55,45 +84,98 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
 
         {/* Price */}
         {listing.price > 0 && (
-          <p className="mb-6 text-3xl font-bold text-emerald-400">{formatCHF(listing.price)} CHF</p>
+          <p className="mb-8 text-3xl font-bold text-emerald-400">{formatCHF(listing.price)} CHF</p>
         )}
 
-        {/* Stats */}
-        <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {listing.monthly_revenue > 0 && (
-            <div className="rounded-xl border border-white/5 bg-[#111] p-4">
-              <p className="text-[10px] text-neutral-500 mb-1">Revenu mensuel</p>
-              <p className="text-lg font-bold">{formatCHF(listing.monthly_revenue)} CHF</p>
+        {/* Chiffres clés */}
+        <Section title="Chiffres clés">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <Stat label="CA mensuel" value={listing.monthly_revenue} suffix="CHF" />
+            <Stat label="CA annuel (12 mois)" value={listing.yearly_revenue} suffix="CHF" />
+            <Stat label="CA N-1" value={listing.yearly_revenue_n1} suffix="CHF" />
+            <Stat label="CA N-2" value={listing.yearly_revenue_n2} suffix="CHF" />
+            <Stat label="Charges mensuelles" value={listing.monthly_costs} suffix="CHF" />
+            <Stat label="Bénéfice net/mois" value={listing.monthly_profit} suffix="CHF" />
+            <Stat label="Marge" value={listing.margin_percent ? `${listing.margin_percent}%` : null} />
+            <Stat label="Ancienneté" value={listing.age_years ? `${listing.age_years} an${listing.age_years > 1 ? "s" : ""}` : null} />
+          </div>
+        </Section>
+
+        {/* Trafic & Audience */}
+        <Section title="Trafic & Audience">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <Stat label="Visiteurs/mois" value={listing.monthly_traffic} suffix="visites" />
+            <Stat label="Clients" value={listing.nb_clients} />
+            <Stat label="Abonnés email" value={listing.email_subscribers} />
+            <Stat label="Followers" value={listing.social_followers} />
+            <Stat label="Domain Authority" value={listing.domain_authority} />
+            <Stat label="Fournisseurs" value={listing.nb_suppliers} />
+          </div>
+          {listing.traffic_sources && (
+            <div className="mt-3 rounded-xl border border-white/5 bg-[#111] p-4">
+              <p className="text-[10px] text-neutral-500 mb-1">Sources de trafic</p>
+              <p className="text-sm text-neutral-300">{listing.traffic_sources}</p>
             </div>
           )}
-          {listing.monthly_traffic > 0 && (
-            <div className="rounded-xl border border-white/5 bg-[#111] p-4">
-              <p className="text-[10px] text-neutral-500 mb-1">Trafic mensuel</p>
-              <p className="text-lg font-bold">{formatCHF(listing.monthly_traffic)} visites</p>
+          {listing.main_keywords && (
+            <div className="mt-3 rounded-xl border border-white/5 bg-[#111] p-4">
+              <p className="text-[10px] text-neutral-500 mb-1">Mots-clés principaux</p>
+              <p className="text-sm text-neutral-300">{listing.main_keywords}</p>
             </div>
           )}
-          {listing.age_years > 0 && (
-            <div className="rounded-xl border border-white/5 bg-[#111] p-4">
-              <p className="text-[10px] text-neutral-500 mb-1">Ancienneté</p>
-              <p className="text-lg font-bold">{listing.age_years} an{listing.age_years > 1 ? "s" : ""}</p>
-            </div>
-          )}
-        </div>
+        </Section>
 
         {/* Description */}
         {listing.description && (
-          <div className="mb-8">
-            <h2 className="mb-3 text-sm font-semibold text-neutral-400">Description</h2>
+          <Section title="Description">
             <div className="rounded-xl border border-white/5 bg-[#111] p-6">
               <p className="text-sm leading-relaxed text-neutral-300 whitespace-pre-wrap">{listing.description}</p>
             </div>
-          </div>
+          </Section>
+        )}
+
+        {/* Business model */}
+        {(listing.business_model || listing.competitors || listing.reason_for_sale || listing.growth_potential || listing.included_in_sale) && (
+          <Section title="Business model">
+            <div className="space-y-3">
+              <InfoBlock label="Modèle économique" value={listing.business_model} />
+              {listing.has_stock && (
+                <div className="rounded-xl border border-white/5 bg-[#111] p-4">
+                  <p className="text-[10px] text-neutral-500 mb-1">Stock</p>
+                  <p className="text-sm text-neutral-300">Vente avec stock{listing.stock_value > 0 ? ` — Valeur : ${formatCHF(listing.stock_value)} CHF` : ""}</p>
+                </div>
+              )}
+              <InfoBlock label="Concurrents" value={listing.competitors} />
+              <InfoBlock label="Raison de la vente" value={listing.reason_for_sale} />
+              <InfoBlock label="Potentiel de croissance" value={listing.growth_potential} />
+              <InfoBlock label="Inclus dans la vente" value={listing.included_in_sale} />
+            </div>
+          </Section>
+        )}
+
+        {/* Technique */}
+        {(listing.tech_stack || listing.hosting) && (
+          <Section title="Technique">
+            <div className="grid grid-cols-2 gap-3">
+              {listing.tech_stack && (
+                <div className="rounded-xl border border-white/5 bg-[#111] p-4">
+                  <p className="text-[10px] text-neutral-500 mb-1">Technologies</p>
+                  <p className="text-sm text-neutral-300">{listing.tech_stack}</p>
+                </div>
+              )}
+              {listing.hosting && (
+                <div className="rounded-xl border border-white/5 bg-[#111] p-4">
+                  <p className="text-[10px] text-neutral-500 mb-1">Hébergeur</p>
+                  <p className="text-sm text-neutral-300">{listing.hosting}</p>
+                </div>
+              )}
+            </div>
+          </Section>
         )}
 
         {/* URL */}
         {listing.url && (
-          <div className="mb-8">
-            <h2 className="mb-3 text-sm font-semibold text-neutral-400">Site web</h2>
+          <Section title="Site web">
             <a
               href={listing.url}
               target="_blank"
@@ -105,12 +187,11 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
             </a>
-          </div>
+          </Section>
         )}
 
         {/* Contact */}
-        <div className="mb-8">
-          <h2 className="mb-3 text-sm font-semibold text-neutral-400">Contacter le vendeur</h2>
+        <Section title="Contacter le vendeur">
           <div className="flex flex-col gap-3 sm:flex-row">
             {listing.contact_email && (
               <a
@@ -137,7 +218,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
               </a>
             )}
           </div>
-        </div>
+        </Section>
       </div>
     </div>
   );
