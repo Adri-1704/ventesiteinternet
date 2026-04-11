@@ -87,6 +87,18 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
           <p className="mb-8 text-3xl font-bold text-emerald-400">{formatCHF(listing.price)} CHF</p>
         )}
 
+        {/* Photos */}
+        {listing.images && listing.images.length > 0 && (
+          <Section title="Photos">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {listing.images.map((url: string, i: number) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img key={i} src={url} alt={`${listing.title} - Photo ${i + 1}`} className="w-full h-48 object-cover rounded-xl border border-white/5" />
+              ))}
+            </div>
+          </Section>
+        )}
+
         {/* Chiffres clés */}
         <Section title="Chiffres clés">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">

@@ -42,6 +42,9 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<"list" | "create">("list");
   const [step, setStep] = useState(1);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [uploadingPhotos, setUploadingPhotos] = useState(false);
+  const [photos, setPhotos] = useState<string[]>([]);
 
   // Form fields
   const [f, setF] = useState({
@@ -79,9 +82,70 @@ export default function Dashboard() {
 
   useEffect(() => { loadData(); }, [loadData]);
 
+  async function uploadPhoto(file: File): Promise<string | null> {
+    if (!user) return null;
+    const ext = file.name.split(".").pop();
+    const path = `${user.id}/${Date.now()}.${ext}`;
+    const { error } = await supabase.storage.from("vsi-images").upload(path, file, { upsert: true });
+    if (error) return null;
+    const { data } = supabase.storage.from("vsi-images").getPublicUrl(path);
+    return data.publicUrl;
+  }
+
+  async function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setUploadingPhotos(true);
+    const newPhotos: string[] = [];
+    for (const file of Array.from(files)) {
+      const url = await uploadPhoto(file);
+      if (url) newPhotos.push(url);
+    }
+    setPhotos((prev) => [...prev, ...newPhotos]);
+    setUploadingPhotos(false);
+  }
+
+  function removePhoto(index: number) {
+    setPhotos((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  async function editListing(id: string) {
+    const { data } = await supabase.from("vsi_listings").select("*").eq("id", id).single();
+    if (!data) return;
+    setEditingId(id);
+    setPhotos(data.images || []);
+    setF({
+      title: data.title || "", description: data.description || "", url: data.url || "",
+      category: data.category || "vitrine", price: data.price ? String(data.price) : "",
+      monthlyRevenue: data.monthly_revenue ? String(data.monthly_revenue) : "",
+      yearlyRevenue: data.yearly_revenue ? String(data.yearly_revenue) : "",
+      monthlyTraffic: data.monthly_traffic ? String(data.monthly_traffic) : "",
+      ageYears: data.age_years ? String(data.age_years) : "",
+      techStack: data.tech_stack || "", marginPercent: data.margin_percent ? String(data.margin_percent) : "",
+      hasStock: data.has_stock || false, stockValue: data.stock_value ? String(data.stock_value) : "",
+      competitors: data.competitors || "", businessModel: data.business_model || "",
+      reasonForSale: data.reason_for_sale || "", growthPotential: data.growth_potential || "",
+      includedInSale: data.included_in_sale || "", monthlyCosts: data.monthly_costs ? String(data.monthly_costs) : "",
+      emailSubscribers: data.email_subscribers ? String(data.email_subscribers) : "",
+      socialFollowers: data.social_followers ? String(data.social_followers) : "",
+      domainAuthority: data.domain_authority ? String(data.domain_authority) : "",
+      contactEmail: data.contact_email || "", contactWhatsapp: data.contact_whatsapp || "",
+      sector: data.sector || "", hosting: data.hosting || "",
+      nbClients: data.nb_clients ? String(data.nb_clients) : "",
+      nbSuppliers: data.nb_suppliers ? String(data.nb_suppliers) : "",
+      yearlyRevenueN1: data.yearly_revenue_n1 ? String(data.yearly_revenue_n1) : "",
+      yearlyRevenueN2: data.yearly_revenue_n2 ? String(data.yearly_revenue_n2) : "",
+      monthlyProfit: data.monthly_profit ? String(data.monthly_profit) : "",
+      trafficSources: data.traffic_sources || "", mainKeywords: data.main_keywords || "",
+      creationDate: data.creation_date || "",
+    });
+    setStep(1);
+    setView("create");
+  }
+
   async function createListing() {
     if (!user || !f.title.trim()) return;
-    await supabase.from("vsi_listings").insert({
+    const payload = {
       user_id: user.id,
       title: f.title.trim(),
       description: f.description.trim(),
@@ -117,8 +181,15 @@ export default function Dashboard() {
       creation_date: f.creationDate.trim(),
       contact_email: f.contactEmail.trim(),
       contact_whatsapp: f.contactWhatsapp.trim(),
+      images: photos,
       status: "published",
-    });
+    };
+
+    if (editingId) {
+      await supabase.from("vsi_listings").update(payload).eq("id", editingId);
+    } else {
+      await supabase.from("vsi_listings").insert(payload);
+    }
     setF({
       title: "", description: "", url: "", category: "vitrine",
       price: "", monthlyRevenue: "", yearlyRevenue: "", monthlyTraffic: "",
@@ -132,6 +203,8 @@ export default function Dashboard() {
       trafficSources: "", mainKeywords: "", creationDate: "",
     });
     setStep(1);
+    setEditingId(null);
+    setPhotos([]);
     setView("list");
     loadData();
   }
@@ -175,7 +248,7 @@ export default function Dashboard() {
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-xl sm:text-2xl font-bold">Mon espace vendeur</h1>
           <button
-            onClick={() => { setView(view === "list" ? "create" : "list"); setStep(1); }}
+            onClick={() => { if (view === "list") { setEditingId(null); setPhotos([]); setView("create"); } else { setView("list"); } setStep(1); }}
             className="rounded-full bg-emerald-500 px-4 sm:px-5 py-2 text-sm font-semibold text-white hover:bg-emerald-600"
           >
             {view === "list" ? "+ Nouvelle annonce" : "← Mes annonces"}
@@ -191,7 +264,7 @@ export default function Dashboard() {
                 <div key={s} className={`h-1.5 flex-1 rounded-full transition-all ${step >= s ? "bg-emerald-500" : "bg-white/10"}`} />
               ))}
             </div>
-            <p className="text-xs text-neutral-500">Étape {step}/4</p>
+            <p className="text-xs text-neutral-500">{editingId ? "Modification" : "Nouvelle annonce"} — Étape {step}/4</p>
 
             {/* Step 1: Infos de base */}
             {step === 1 && (
@@ -211,6 +284,25 @@ export default function Dashboard() {
                   <input type="text" value={f.creationDate} onChange={(e) => updateF("creationDate", e.target.value)} placeholder="Date de création (ex: 03/2022)" className={inputClass} />
                   <input type="text" value={f.techStack} onChange={(e) => updateF("techStack", e.target.value)} placeholder="Technologies (WordPress, Shopify, Next.js...)" className={inputClass} />
                   <input type="text" value={f.hosting} onChange={(e) => updateF("hosting", e.target.value)} placeholder="Hébergeur (Infomaniak, OVH, Vercel...)" className={inputClass} />
+                </div>
+                {/* Photos */}
+                <div>
+                  <label className="block text-[10px] text-neutral-500 mb-2">Photos / Screenshots</label>
+                  {photos.length > 0 && (
+                    <div className="grid grid-cols-3 gap-2 mb-3">
+                      {photos.map((url, i) => (
+                        <div key={i} className="relative group">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={url} alt={`Photo ${i + 1}`} className="w-full h-24 object-cover rounded-lg border border-white/10" />
+                          <button onClick={() => removePhoto(i)} className="absolute top-1 right-1 h-5 w-5 flex items-center justify-center rounded-full bg-red-500 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-dashed border-white/10 p-4 text-sm text-neutral-500 hover:border-emerald-500/30 hover:text-emerald-400 transition-all">
+                    {uploadingPhotos ? "Upload en cours..." : "+ Ajouter des photos"}
+                    <input type="file" accept="image/*" multiple onChange={handlePhotoUpload} className="hidden" disabled={uploadingPhotos} />
+                  </label>
                 </div>
               </div>
             )}
@@ -379,7 +471,7 @@ export default function Dashboard() {
                   disabled={!f.title.trim()}
                   className="flex-1 rounded-lg bg-emerald-500 py-3 text-sm font-semibold text-white hover:bg-emerald-600 disabled:opacity-50"
                 >
-                  Publier l&apos;annonce
+                  {editingId ? "Enregistrer les modifications" : "Publier l'annonce"}
                 </button>
               )}
             </div>
@@ -423,6 +515,7 @@ export default function Dashboard() {
                             <button onClick={() => updateStatus(listing.id, "archived")} className="rounded-lg bg-neutral-500/20 px-2 py-1 text-[10px] font-medium text-neutral-400 hover:bg-neutral-500/30">Archiver</button>
                           </>
                         )}
+                        <button onClick={() => editListing(listing.id)} className="rounded-lg bg-white/5 px-2 py-1 text-[10px] font-medium text-neutral-400 hover:bg-white/10">Modifier</button>
                         <button onClick={() => deleteListing(listing.id)} className="rounded-lg bg-red-500/20 px-2 py-1 text-[10px] font-medium text-red-400 hover:bg-red-500/30">Supprimer</button>
                       </div>
                     </div>
