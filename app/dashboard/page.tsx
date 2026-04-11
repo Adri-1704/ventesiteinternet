@@ -52,6 +52,9 @@ export default function Dashboard() {
     growthPotential: "", includedInSale: "", monthlyCosts: "",
     emailSubscribers: "", socialFollowers: "", domainAuthority: "",
     contactEmail: "", contactWhatsapp: "",
+    sector: "", hosting: "", nbClients: "", nbSuppliers: "",
+    yearlyRevenueN1: "", yearlyRevenueN2: "", monthlyProfit: "",
+    trafficSources: "", mainKeywords: "", creationDate: "",
   });
 
   function updateF(key: string, value: string | boolean) {
@@ -102,6 +105,16 @@ export default function Dashboard() {
       email_subscribers: parseInt(f.emailSubscribers) || 0,
       social_followers: parseInt(f.socialFollowers) || 0,
       domain_authority: parseInt(f.domainAuthority) || 0,
+      sector: f.sector.trim(),
+      hosting: f.hosting.trim(),
+      nb_clients: parseInt(f.nbClients) || 0,
+      nb_suppliers: parseInt(f.nbSuppliers) || 0,
+      yearly_revenue_n1: parseFloat(f.yearlyRevenueN1) || 0,
+      yearly_revenue_n2: parseFloat(f.yearlyRevenueN2) || 0,
+      monthly_profit: parseFloat(f.monthlyProfit) || 0,
+      traffic_sources: f.trafficSources.trim(),
+      main_keywords: f.mainKeywords.trim(),
+      creation_date: f.creationDate.trim(),
       contact_email: f.contactEmail.trim(),
       contact_whatsapp: f.contactWhatsapp.trim(),
       status: "published",
@@ -114,6 +127,9 @@ export default function Dashboard() {
       growthPotential: "", includedInSale: "", monthlyCosts: "",
       emailSubscribers: "", socialFollowers: "", domainAuthority: "",
       contactEmail: user?.email || "", contactWhatsapp: "",
+      sector: "", hosting: "", nbClients: "", nbSuppliers: "",
+      yearlyRevenueN1: "", yearlyRevenueN2: "", monthlyProfit: "",
+      trafficSources: "", mainKeywords: "", creationDate: "",
     });
     setStep(1);
     setView("list");
@@ -184,23 +200,25 @@ export default function Dashboard() {
                 <input type="text" value={f.title} onChange={(e) => updateF("title", e.target.value)} placeholder="Titre de l'annonce *" className={inputClass} />
                 <textarea value={f.description} onChange={(e) => updateF("description", e.target.value)} placeholder="Décrivez votre site en détail : ce qu'il fait, son historique, ses points forts..." rows={5} className={inputClass + " resize-none"} />
                 <div className="grid grid-cols-2 gap-3">
-                  <input type="url" value={f.url} onChange={(e) => updateF("url", e.target.value)} placeholder="URL du site" className={inputClass} />
+                  <input type="url" value={f.url} onChange={(e) => updateF("url", e.target.value)} placeholder="URL du site *" className={inputClass} />
                   <select value={f.category} onChange={(e) => updateF("category", e.target.value)} className={inputClass}>
                     <option value="vitrine">🖥️ Site vitrine</option>
                     <option value="ecommerce">🛒 E-commerce</option>
                     <option value="saas">⚡ SaaS</option>
                     <option value="domaines">🌐 Nom de domaine</option>
                   </select>
+                  <input type="text" value={f.sector} onChange={(e) => updateF("sector", e.target.value)} placeholder="Secteur d'activité (ex: Mode, Food, Tech...)" className={inputClass} />
+                  <input type="text" value={f.creationDate} onChange={(e) => updateF("creationDate", e.target.value)} placeholder="Date de création (ex: 03/2022)" className={inputClass} />
+                  <input type="text" value={f.techStack} onChange={(e) => updateF("techStack", e.target.value)} placeholder="Technologies (WordPress, Shopify, Next.js...)" className={inputClass} />
+                  <input type="text" value={f.hosting} onChange={(e) => updateF("hosting", e.target.value)} placeholder="Hébergeur (Infomaniak, OVH, Vercel...)" className={inputClass} />
                 </div>
-                <input type="text" value={f.techStack} onChange={(e) => updateF("techStack", e.target.value)} placeholder="Technologies utilisées (WordPress, Shopify, Next.js...)" className={inputClass} />
-                <input type="number" value={f.ageYears} onChange={(e) => updateF("ageYears", e.target.value)} placeholder="Depuis combien d'années le site existe ?" className={inputClass} />
               </div>
             )}
 
             {/* Step 2: Chiffres */}
             {step === 2 && (
               <div className="rounded-xl border border-white/5 bg-[#111] p-5 space-y-4">
-                <h2 className="text-sm font-semibold text-emerald-400">2. Chiffres clés</h2>
+                <h2 className="text-sm font-semibold text-emerald-400">2. Chiffres clés & Financiers</h2>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-[10px] text-neutral-500 mb-1">Prix de vente (CHF)</label>
@@ -211,23 +229,40 @@ export default function Dashboard() {
                     <input type="number" value={f.monthlyRevenue} onChange={(e) => updateF("monthlyRevenue", e.target.value)} placeholder="Ex: 2000" className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">CA annuel (CHF)</label>
+                    <label className="block text-[10px] text-neutral-500 mb-1">CA HT 12 derniers mois (CHF)</label>
                     <input type="number" value={f.yearlyRevenue} onChange={(e) => updateF("yearlyRevenue", e.target.value)} placeholder="Ex: 24000" className={inputClass} />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] text-neutral-500 mb-1">CA HT année N-1 (CHF)</label>
+                    <input type="number" value={f.yearlyRevenueN1} onChange={(e) => updateF("yearlyRevenueN1", e.target.value)} placeholder="Ex: 20000" className={inputClass} />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] text-neutral-500 mb-1">CA HT année N-2 (CHF)</label>
+                    <input type="number" value={f.yearlyRevenueN2} onChange={(e) => updateF("yearlyRevenueN2", e.target.value)} placeholder="Ex: 15000" className={inputClass} />
                   </div>
                   <div>
                     <label className="block text-[10px] text-neutral-500 mb-1">Charges mensuelles (CHF)</label>
                     <input type="number" value={f.monthlyCosts} onChange={(e) => updateF("monthlyCosts", e.target.value)} placeholder="Ex: 500" className={inputClass} />
                   </div>
                   <div>
+                    <label className="block text-[10px] text-neutral-500 mb-1">Bénéfice net mensuel (CHF)</label>
+                    <input type="number" value={f.monthlyProfit} onChange={(e) => updateF("monthlyProfit", e.target.value)} placeholder="Ex: 1500" className={inputClass} />
+                  </div>
+                  <div>
                     <label className="block text-[10px] text-neutral-500 mb-1">Marge (%)</label>
                     <input type="number" value={f.marginPercent} onChange={(e) => updateF("marginPercent", e.target.value)} placeholder="Ex: 40" className={inputClass} />
                   </div>
+                </div>
+                <h3 className="text-xs font-semibold text-neutral-500 pt-2">Trafic & Audience</h3>
+                <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-[10px] text-neutral-500 mb-1">Visiteurs/mois</label>
                     <input type="number" value={f.monthlyTraffic} onChange={(e) => updateF("monthlyTraffic", e.target.value)} placeholder="Ex: 5000" className={inputClass} />
                   </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] text-neutral-500 mb-1">Nombre de clients</label>
+                    <input type="number" value={f.nbClients} onChange={(e) => updateF("nbClients", e.target.value)} placeholder="Ex: 200" className={inputClass} />
+                  </div>
                   <div>
                     <label className="block text-[10px] text-neutral-500 mb-1">Abonnés email</label>
                     <input type="number" value={f.emailSubscribers} onChange={(e) => updateF("emailSubscribers", e.target.value)} placeholder="Ex: 500" className={inputClass} />
@@ -236,6 +271,14 @@ export default function Dashboard() {
                     <label className="block text-[10px] text-neutral-500 mb-1">Followers réseaux sociaux</label>
                     <input type="number" value={f.socialFollowers} onChange={(e) => updateF("socialFollowers", e.target.value)} placeholder="Ex: 2000" className={inputClass} />
                   </div>
+                </div>
+                <div>
+                  <label className="block text-[10px] text-neutral-500 mb-1">Sources de trafic</label>
+                  <input type="text" value={f.trafficSources} onChange={(e) => updateF("trafficSources", e.target.value)} placeholder="Ex: SEO 60%, Pub 20%, Direct 15%, Réseaux 5%" className={inputClass} />
+                </div>
+                <div>
+                  <label className="block text-[10px] text-neutral-500 mb-1">Mots-clés principaux</label>
+                  <input type="text" value={f.mainKeywords} onChange={(e) => updateF("mainKeywords", e.target.value)} placeholder="Ex: chaussettes fun, chaussettes originales suisse" className={inputClass} />
                 </div>
               </div>
             )}
@@ -263,6 +306,10 @@ export default function Dashboard() {
                     <input type="number" value={f.stockValue} onChange={(e) => updateF("stockValue", e.target.value)} placeholder="Ex: 5000" className={inputClass} />
                   </div>
                 )}
+                <div>
+                  <label className="block text-[10px] text-neutral-500 mb-1">Nombre de fournisseurs</label>
+                  <input type="number" value={f.nbSuppliers} onChange={(e) => updateF("nbSuppliers", e.target.value)} placeholder="Ex: 3" className={inputClass} />
+                </div>
                 <div>
                   <label className="block text-[10px] text-neutral-500 mb-1">Concurrents principaux</label>
                   <textarea value={f.competitors} onChange={(e) => updateF("competitors", e.target.value)} placeholder="Listez les concurrents directs et votre avantage par rapport à eux" rows={3} className={inputClass + " resize-none"} />
