@@ -18,6 +18,7 @@ interface Listing {
   contact_email: string;
   contact_whatsapp: string;
   views: number;
+  images: string[];
   created_at: string;
 }
 
@@ -151,8 +152,13 @@ function AnnoncesContent() {
               <Link
                 key={listing.id}
                 href={`/annonces/${listing.id}`}
-                className="group rounded-2xl border border-white/5 bg-[#111] p-6 transition-all hover:border-emerald-500/30"
+                className="group rounded-2xl border border-white/5 bg-[#111] overflow-hidden transition-all hover:border-emerald-500/30"
               >
+                {listing.images && listing.images.length > 0 && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={listing.images[0]} alt={listing.title} className="w-full h-40 object-cover" />
+                )}
+                <div className="p-6">
                 <div className="mb-3 flex items-center justify-between">
                   <span className="rounded-full bg-white/5 px-3 py-1 text-[10px] font-medium text-neutral-400">
                     {CATEGORIES.find((c) => c.slug === listing.category)?.label || listing.category}
@@ -186,6 +192,7 @@ function AnnoncesContent() {
                       <p className="font-bold">{listing.age_years} an{listing.age_years > 1 ? "s" : ""}</p>
                     </div>
                   )}
+                </div>
                 </div>
               </Link>
             ))}
