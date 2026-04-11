@@ -50,12 +50,30 @@ function timeAgo(dateStr: string) {
 
 export default function Admin() {
   const [password, setPassword] = useState("");
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return sessionStorage.getItem("vsi-admin-auth") === "1";
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [users, setUsers] = useState<User[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
   const [view, setView] = useState<"users" | "listings">("listings");
+
+  // Auto-load if session exists
+  useEffect(() => {
+    if (authenticated && users.length === 0) {
+      const pwd = sessionStorage.getItem("vsi-admin-pwd") || "";
+      fetch("/api/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: pwd, action: "load" }),
+      }).then(r => r.json()).then(data => {
+        if (data.users) setUsers(data.users);
+        if (data.listings) setListings(data.listings);
+      }).catch(() => { setAuthenticated(false); sessionStorage.removeItem("vsi-admin-auth"); });
+    }
+  }, [authenticated]);
 
   async function login() {
     setLoading(true);
@@ -71,6 +89,8 @@ export default function Admin() {
       setUsers(data.users || []);
       setListings(data.listings || []);
       setAuthenticated(true);
+      sessionStorage.setItem("vsi-admin-auth", "1");
+      sessionStorage.setItem("vsi-admin-pwd", password);
     } catch {
       setError("Erreur de connexion");
     } finally {
@@ -129,7 +149,7 @@ export default function Admin() {
           <Link href="/" className="text-lg font-bold">Vente<span className="text-emerald-400">SiteInternet</span>.ch</Link>
           <div className="flex items-center gap-4">
             <span className="text-xs text-emerald-400 font-semibold">ADMIN</span>
-            <button onClick={() => setAuthenticated(false)} className="text-sm text-neutral-400 hover:text-white">Déconnexion</button>
+            <button onClick={() => { setAuthenticated(false); sessionStorage.removeItem("vsi-admin-auth"); sessionStorage.removeItem("vsi-admin-pwd"); }} className="text-sm text-neutral-400 hover:text-white">Déconnexion</button>
           </div>
         </div>
       </header>
