@@ -31,20 +31,20 @@ export default function Signup() {
     <div className="flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold">Vente<span className="text-emerald-400">SiteInternet</span>.ch</h1>
+          <h1 className="text-2xl font-bold">Vente<span className="text-emerald-600">SiteInternet</span>.ch</h1>
           <p className="mt-2 text-sm text-gray-500">Créez votre compte vendeur</p>
         </div>
         <form onSubmit={handleSignup} className="space-y-4">
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="Email" className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-base text-gray-900 placeholder-neutral-500 outline-none focus:border-emerald-500/50" />
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Mot de passe (6 car. min)" className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-base text-gray-900 placeholder-neutral-500 outline-none focus:border-emerald-500/50" />
-          <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required placeholder="Confirmer le mot de passe" className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-base text-gray-900 placeholder-neutral-500 outline-none focus:border-emerald-500/50" />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="Email" className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-base text-gray-900 placeholder-neutral-500 outline-none focus:border-emerald-500/50" />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Mot de passe (6 car. min)" className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-base text-gray-900 placeholder-neutral-500 outline-none focus:border-emerald-500/50" />
+          <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required placeholder="Confirmer le mot de passe" className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-base text-gray-900 placeholder-neutral-500 outline-none focus:border-emerald-500/50" />
           {error && <p className="text-sm text-red-400">{error}</p>}
           <button type="submit" disabled={loading} className="w-full rounded-lg bg-emerald-500 py-3 text-sm font-semibold text-gray-900 hover:bg-emerald-600 disabled:opacity-50">
             {loading ? "Création..." : "Créer mon compte"}
           </button>
         </form>
         <p className="mt-6 text-center text-sm text-gray-500">
-          Déjà un compte ? <Link href="/auth/login" className="font-semibold text-emerald-400">Se connecter</Link>
+          Déjà un compte ? <Link href="/auth/login" className="font-semibold text-emerald-600">Se connecter</Link>
         </p>
       </div>
     </div>

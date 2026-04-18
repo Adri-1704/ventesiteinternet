@@ -93,13 +93,13 @@ export default async function Home() {
   const counts = await getCategoryCounts();
   const categories = categoryMeta.map((c) => ({ ...c, count: counts[c.slug] || 0 }));
   return (
-    <div className="min-h-screen">
+    <main className="min-h-screen">
       {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm shadow-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <span className="text-base sm:text-lg font-bold">
-            Vente<span className="text-emerald-400">Site</span>
-            <span className="hidden sm:inline"><span className="text-emerald-400">Internet</span>.ch</span>
+            Vente<span className="text-emerald-600">Site</span>
+            <span className="hidden sm:inline"><span className="text-emerald-600">Internet</span>.ch</span>
             <span className="sm:hidden">.ch</span>
           </span>
           <div className="flex items-center gap-3 sm:gap-6">
@@ -119,7 +119,7 @@ export default async function Home() {
         <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-blue-50 blur-3xl" />
 
         <div className="relative mx-auto max-w-4xl text-center">
-          <div className="mb-6 inline-block rounded-full border border-emerald-300 bg-emerald-50 px-4 py-1.5 text-sm text-emerald-400">
+          <div className="mb-6 inline-block rounded-full border border-emerald-300 bg-emerald-50 px-4 py-1.5 text-sm text-emerald-600">
             La marketplace suisse pour les sites web
           </div>
           <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-7xl">
@@ -142,7 +142,7 @@ export default async function Home() {
             </Link>
             <Link
               href="/auth/signup"
-              className="w-full rounded-full border border-emerald-400 px-8 py-3.5 text-base font-semibold text-emerald-400 hover:bg-emerald-50 sm:w-auto"
+              className="w-full rounded-full border border-emerald-400 px-8 py-3.5 text-base font-semibold text-emerald-600 hover:bg-emerald-50 sm:w-auto"
             >
               Vendre mon site
             </Link>
@@ -174,7 +174,7 @@ export default async function Home() {
       <section className="px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-4 text-center text-3xl font-bold md:text-4xl">
-            Pourquoi <span className="text-emerald-400">VenteSiteInternet</span> ?
+            Pourquoi <span className="text-emerald-600">VenteSiteInternet</span> ?
           </h2>
           <p className="mx-auto mb-12 max-w-2xl text-center text-gray-600">
             La première marketplace suisse dédiée à l&apos;achat-vente de sites web.
@@ -195,7 +195,7 @@ export default async function Home() {
       <section id="pricing" className="border-t border-gray-200 px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-4 text-center text-3xl font-bold md:text-4xl">
-            Tarifs <span className="text-emerald-400">vendeurs</span>
+            Tarifs <span className="text-emerald-600">vendeurs</span>
           </h2>
           <p className="mx-auto mb-12 max-w-2xl text-center text-gray-600">
             Gratuit pour les acheteurs. Un seul abonnement tout inclus pour les vendeurs.
@@ -222,10 +222,10 @@ export default async function Home() {
                 </div>
                 <p className="mb-4 text-xs text-gray-500">soit {formatCHF(plan.perMonth)} CHF/mois</p>
                 <ul className="mb-6 space-y-2 text-sm text-gray-600">
-                  <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Annonces illimitées</li>
-                  <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Contact direct acheteurs</li>
-                  <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Statistiques de vues</li>
-                  <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Badge vendeur vérifié</li>
+                  <li className="flex items-center gap-2"><span className="text-emerald-600">✓</span> Annonces illimitées</li>
+                  <li className="flex items-center gap-2"><span className="text-emerald-600">✓</span> Contact direct acheteurs</li>
+                  <li className="flex items-center gap-2"><span className="text-emerald-600">✓</span> Statistiques de vues</li>
+                  <li className="flex items-center gap-2"><span className="text-emerald-600">✓</span> Badge vendeur vérifié</li>
                 </ul>
                 <Link
                   href="/auth/signup"
@@ -254,7 +254,7 @@ export default async function Home() {
               { step: "3", title: "Concluez la vente", desc: "Négociez et finalisez la transaction entre vous, sans commission." },
             ].map((s) => (
               <div key={s.step} className="text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-lg font-bold text-emerald-400">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-lg font-bold text-emerald-600">
                   {s.step}
                 </div>
                 <h3 className="mb-2 text-lg font-semibold">{s.title}</h3>
@@ -308,17 +308,24 @@ export default async function Home() {
       <footer className="border-t border-gray-200 py-8">
         <div className="mx-auto max-w-6xl px-6">
           <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between">
-            <span className="text-lg font-bold">Vente<span className="text-emerald-400">SiteInternet</span>.ch</span>
+            <span className="text-lg font-bold">Vente<span className="text-emerald-600">SiteInternet</span>.ch</span>
             <div className="flex items-center gap-6">
               <a href="https://wa.me/41794517496" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-gray-900">WhatsApp</a>
               <a href="mailto:contact@ventesiteinternet.ch" className="text-sm text-gray-500 hover:text-gray-900">Contact</a>
             </div>
           </div>
-          <p className="mt-6 text-center text-xs text-gray-400">
-            &copy; {new Date().getFullYear()} VenteSiteInternet.ch — Le Bouveret, Valais, Suisse.
+          <div className="mt-4 flex items-center justify-center gap-4 text-xs text-gray-500">
+            <Link href="/cgv" className="hover:text-gray-900">CGV</Link>
+            <span>·</span>
+            <Link href="/confidentialite" className="hover:text-gray-900">Confidentialité</Link>
+            <span>·</span>
+            <Link href="/mentions-legales" className="hover:text-gray-900">Mentions légales</Link>
+          </div>
+          <p className="mt-4 text-center text-xs text-gray-600">
+            &copy; {new Date().getFullYear()} VenteSiteInternet.ch — Vionnaz, Valais, Suisse.
           </p>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }

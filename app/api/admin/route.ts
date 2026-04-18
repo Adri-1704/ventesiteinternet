@@ -5,7 +5,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-const ADMIN_PASSWORD = "Adrien2026";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Adrien2026";
 
 export async function POST(request: Request) {
   try {
