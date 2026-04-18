@@ -238,7 +238,7 @@ export default function Admin() {
         {view === "users" && (
           <div className="space-y-2">
             {users.map((u) => (
-              <div key={u.id} className={`rounded-xl border p-4 flex ${dark ? "border-white/5 bg-[#111]" : "border-gray-200 bg-gray-50"}`}  items-center justify-between">
+              <div key={u.id} className={`rounded-xl border p-4 flex items-center justify-between ${dark ? "border-white/5 bg-[#111]" : "border-gray-200 bg-gray-50"}`}>
                 <div>
                   <p className="text-sm font-semibold">{u.email}</p>
                   <p className="text-[10px] text-gray-500">Inscrit {timeAgo(u.created_at)}</p>
