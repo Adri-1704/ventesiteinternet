@@ -26,6 +26,7 @@ export async function POST(request: Request) {
         id: u.id,
         email: u.email || "",
         created_at: u.created_at,
+        banned: u.banned_until ? true : false,
       }));
 
       return Response.json({
@@ -43,6 +44,41 @@ export async function POST(request: Request) {
     if (action === "delete") {
       const { listingId } = body;
       await supabase.from("vsi_listings").delete().eq("id", listingId);
+      return Response.json({ ok: true });
+    }
+
+    // Increment views for a listing (called from public listing page)
+    if (action === "trackView") {
+      const { listingId } = body;
+      const { data } = await supabase.from("vsi_listings").select("views").eq("id", listingId).single();
+      const currentViews = (data as { views: number } | null)?.views || 0;
+      await supabase.from("vsi_listings").update({ views: currentViews + 1 }).eq("id", listingId);
+      return Response.json({ ok: true });
+    }
+
+    // Ban user
+    if (action === "banUser") {
+      const { userId } = body;
+      await supabase.auth.admin.updateUserById(userId, { ban_duration: "876000h" }); // ~100 years
+      // Archive all their listings
+      await supabase.from("vsi_listings").update({ status: "archived" }).eq("user_id", userId);
+      return Response.json({ ok: true });
+    }
+
+    // Unban user
+    if (action === "unbanUser") {
+      const { userId } = body;
+      await supabase.auth.admin.updateUserById(userId, { ban_duration: "none" });
+      return Response.json({ ok: true });
+    }
+
+    // Delete user
+    if (action === "deleteUser") {
+      const { userId } = body;
+      // Delete their listings first
+      await supabase.from("vsi_listings").delete().eq("user_id", userId);
+      // Delete auth user
+      await supabase.auth.admin.deleteUser(userId);
       return Response.json({ ok: true });
     }
 

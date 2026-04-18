@@ -1,3 +1,4 @@
+import { ViewTracker } from "./ViewTracker";
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -60,7 +61,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
   if (!listing) notFound();
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20"><ViewTracker listingId={listing.id} />
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-4">
           <Link href="/" className="text-lg font-bold">Vente<span className="text-emerald-400">SiteInternet</span>.ch</Link>

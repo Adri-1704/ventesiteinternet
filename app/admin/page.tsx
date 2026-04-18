@@ -7,6 +7,7 @@ interface User {
   id: string;
   email: string;
   created_at: string;
+  banned: boolean;
 }
 
 interface Listing {
@@ -118,6 +119,33 @@ export default function Admin() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password, action: "delete", listingId: id }),
+    });
+    login();
+  }
+
+  async function banUser(id: string) {
+    await fetch("/api/admin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password, action: "banUser", userId: id }),
+    });
+    login();
+  }
+
+  async function unbanUser(id: string) {
+    await fetch("/api/admin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password, action: "unbanUser", userId: id }),
+    });
+    login();
+  }
+
+  async function deleteUser(id: string) {
+    await fetch("/api/admin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password, action: "deleteUser", userId: id }),
     });
     login();
   }
@@ -240,10 +268,20 @@ export default function Admin() {
             {users.map((u) => (
               <div key={u.id} className={`rounded-xl border p-4 flex items-center justify-between ${dark ? "border-white/5 bg-[#111]" : "border-gray-200 bg-gray-50"}`}>
                 <div>
-                  <p className="text-sm font-semibold">{u.email}</p>
-                  <p className="text-[10px] text-gray-500">Inscrit {timeAgo(u.created_at)}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-semibold">{u.email}</p>
+                    {u.banned && <span className="rounded-full bg-red-500/20 px-2 py-0.5 text-[10px] font-semibold text-red-400">Banni</span>}
+                  </div>
+                  <p className="text-[10px] text-gray-500">Inscrit {timeAgo(u.created_at)} · {listings.filter(l => l.user_id === u.id).length} annonces</p>
                 </div>
-                <span className="text-[10px] text-neutral-600 font-mono">{u.id.slice(0, 8)}</span>
+                <div className="flex items-center gap-2">
+                  {u.banned ? (
+                    <button onClick={() => unbanUser(u.id)} className="rounded-lg bg-emerald-500/20 px-2 py-1 text-[10px] font-medium text-emerald-400">Débannir</button>
+                  ) : (
+                    <button onClick={() => { if (confirm(`Bannir ${u.email} ? Ses annonces seront archivées.`)) banUser(u.id); }} className="rounded-lg bg-orange-500/20 px-2 py-1 text-[10px] font-medium text-orange-400">Bannir</button>
+                  )}
+                  <button onClick={() => { if (confirm(`Supprimer ${u.email} et toutes ses annonces ? Irréversible.`)) deleteUser(u.id); }} className="rounded-lg bg-red-500/20 px-2 py-1 text-[10px] font-medium text-red-400">Supprimer</button>
+                </div>
               </div>
             ))}
           </div>
