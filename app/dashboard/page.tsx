@@ -512,16 +512,16 @@ export default function Dashboard() {
                       <span className="text-xs text-gray-500">{listing.views} vues</span>
                       <div className="flex gap-1 flex-wrap justify-end">
                         {listing.status === "draft" && (
-                          <button onClick={() => updateStatus(listing.id, "published")} className="rounded-lg bg-emerald-100 px-2 py-1 text-[10px] font-medium text-emerald-400 hover:bg-emerald-500/30">Publier</button>
+                          <button onClick={() => updateStatus(listing.id, "published")} className="rounded-lg bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-600 hover:bg-emerald-200">Publier</button>
                         )}
                         {listing.status === "published" && (
                           <>
-                            <button onClick={() => updateStatus(listing.id, "sold")} className="rounded-lg bg-blue-500/20 px-2 py-1 text-[10px] font-medium text-blue-400 hover:bg-blue-500/30">Vendu</button>
-                            <button onClick={() => updateStatus(listing.id, "archived")} className="rounded-lg bg-neutral-500/20 px-2 py-1 text-[10px] font-medium text-gray-600 hover:bg-neutral-500/30">Archiver</button>
+                            <button onClick={() => updateStatus(listing.id, "sold")} className="rounded-lg bg-blue-500/20 px-4 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-500/30">Vendu</button>
+                            <button onClick={() => updateStatus(listing.id, "archived")} className="rounded-lg bg-neutral-500/20 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-neutral-500/30">Archiver</button>
                           </>
                         )}
-                        <button onClick={() => editListing(listing.id)} className="rounded-lg bg-gray-100 px-2 py-1 text-[10px] font-medium text-gray-600 hover:bg-white/10">Modifier</button>
-                        <button onClick={() => deleteListing(listing.id)} className="rounded-lg bg-red-500/20 px-2 py-1 text-[10px] font-medium text-red-400 hover:bg-red-500/30">Supprimer</button>
+                        <button onClick={() => editListing(listing.id)} className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300">Modifier</button>
+                        <button onClick={() => deleteListing(listing.id)} className="rounded-lg bg-red-500/20 px-4 py-2 text-sm font-semibold text-red-500 hover:bg-red-500/30">Supprimer</button>
                       </div>
                     </div>
                   </div>
