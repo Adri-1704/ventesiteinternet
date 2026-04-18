@@ -120,7 +120,7 @@ export default function Admin() {
 
   if (!authenticated) {
     return (
-      <div className="flex min-h-screen items-center justify-center px-4">
+      <div className="flex min-h-screen items-center justify-center px-4 bg-[#0a0a0a] text-white">
         <div className="w-full max-w-sm">
           <h1 className="mb-2 text-2xl font-bold text-center">Admin</h1>
           <p className="mb-6 text-sm text-neutral-500 text-center">VenteSiteInternet.ch</p>
@@ -144,7 +144,7 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 bg-[#0a0a0a] text-white">
       <header className="sticky top-0 z-40 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-4">
           <Link href="/" className="text-lg font-bold">Vente<span className="text-emerald-400">SiteInternet</span>.ch</Link>
