@@ -212,11 +212,14 @@ export default function Dashboard() {
   }
 
   async function updateStatus(id: string, status: string) {
+    const labels: Record<string, string> = { sold: "Marquer comme vendu", archived: "Archiver cette annonce", published: "Republier cette annonce" };
+    if (!confirm(`${labels[status] || status} ?`)) return;
     await supabase.from("vsi_listings").update({ status }).eq("id", id);
     loadData();
   }
 
   async function deleteListing(id: string) {
+    if (!confirm("Supprimer cette annonce ? Cette action est irréversible.")) return;
     await supabase.from("vsi_listings").delete().eq("id", id);
     loadData();
   }
