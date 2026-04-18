@@ -22,7 +22,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
-  draft: { label: "Brouillon", color: "bg-zinc-700 text-zinc-300" },
+  draft: { label: "Brouillon", color: "bg-gray-200 text-gray-700" },
   published: { label: "Publié", color: "bg-emerald-100 text-emerald-400" },
   sold: { label: "Vendu", color: "bg-blue-500/20 text-blue-400" },
   archived: { label: "Archivé", color: "bg-neutral-500/20 text-gray-600" },

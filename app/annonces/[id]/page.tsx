@@ -42,7 +42,7 @@ function InfoBlock({ label, value }: { label: string; value: string | null | und
   return (
     <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
       <p className="text-[10px] text-gray-500 mb-1">{label}</p>
-      <p className="text-sm leading-relaxed text-neutral-300 whitespace-pre-wrap">{value}</p>
+      <p className="text-sm leading-relaxed text-gray-700 whitespace-pre-wrap">{value}</p>
     </div>
   );
 }
@@ -126,13 +126,13 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
           {listing.traffic_sources && (
             <div className="mt-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
               <p className="text-[10px] text-gray-500 mb-1">Sources de trafic</p>
-              <p className="text-sm text-neutral-300">{listing.traffic_sources}</p>
+              <p className="text-sm text-gray-700">{listing.traffic_sources}</p>
             </div>
           )}
           {listing.main_keywords && (
             <div className="mt-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
               <p className="text-[10px] text-gray-500 mb-1">Mots-clés principaux</p>
-              <p className="text-sm text-neutral-300">{listing.main_keywords}</p>
+              <p className="text-sm text-gray-700">{listing.main_keywords}</p>
             </div>
           )}
         </Section>
@@ -141,7 +141,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
         {listing.description && (
           <Section title="Description">
             <div className="rounded-xl border border-gray-200 bg-gray-50 p-6">
-              <p className="text-sm leading-relaxed text-neutral-300 whitespace-pre-wrap">{listing.description}</p>
+              <p className="text-sm leading-relaxed text-gray-700 whitespace-pre-wrap">{listing.description}</p>
             </div>
           </Section>
         )}
@@ -154,7 +154,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
               {listing.has_stock && (
                 <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
                   <p className="text-[10px] text-gray-500 mb-1">Stock</p>
-                  <p className="text-sm text-neutral-300">Vente avec stock{listing.stock_value > 0 ? ` — Valeur : ${formatCHF(listing.stock_value)} CHF` : ""}</p>
+                  <p className="text-sm text-gray-700">Vente avec stock{listing.stock_value > 0 ? ` — Valeur : ${formatCHF(listing.stock_value)} CHF` : ""}</p>
                 </div>
               )}
               <InfoBlock label="Concurrents" value={listing.competitors} />
@@ -172,13 +172,13 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
               {listing.tech_stack && (
                 <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
                   <p className="text-[10px] text-gray-500 mb-1">Technologies</p>
-                  <p className="text-sm text-neutral-300">{listing.tech_stack}</p>
+                  <p className="text-sm text-gray-700">{listing.tech_stack}</p>
                 </div>
               )}
               {listing.hosting && (
                 <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
                   <p className="text-[10px] text-gray-500 mb-1">Hébergeur</p>
-                  <p className="text-sm text-neutral-300">{listing.hosting}</p>
+                  <p className="text-sm text-gray-700">{listing.hosting}</p>
                 </div>
               )}
             </div>
