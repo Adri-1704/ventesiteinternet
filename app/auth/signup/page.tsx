@@ -21,6 +21,8 @@ export default function Signup() {
     const supabase = createClient();
     const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/auth/callback` } });
     if (error) { setError(error.message); setLoading(false); return; }
+    // Send welcome email
+    fetch("/api/email", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "welcome", email }) }).catch(() => {});
     // Auto-login
     const { error: loginErr } = await supabase.auth.signInWithPassword({ email, password });
     if (!loginErr) router.push("/dashboard");

@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { sendListingValidatedEmail, sendListingRejectedEmail } from "@/app/lib/email";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -37,7 +38,17 @@ export async function POST(request: Request) {
 
     if (action === "updateStatus") {
       const { listingId, status } = body;
+      // Get listing info for email
+      const { data: listing } = await supabase.from("vsi_listings").select("title, contact_email").eq("id", listingId).single() as { data: { title: string; contact_email: string } | null };
       await supabase.from("vsi_listings").update({ status }).eq("id", listingId);
+      // Send email notification to seller
+      if (listing?.contact_email) {
+        if (status === "published") {
+          sendListingValidatedEmail(listing.contact_email, listing.title).catch(() => {});
+        } else if (status === "rejected") {
+          sendListingRejectedEmail(listing.contact_email, listing.title).catch(() => {});
+        }
+      }
       return Response.json({ ok: true });
     }
 

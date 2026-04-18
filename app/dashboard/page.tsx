@@ -182,13 +182,15 @@ export default function Dashboard() {
       contact_email: f.contactEmail.trim(),
       contact_whatsapp: f.contactWhatsapp.trim(),
       images: photos,
-      status: "published",
+      status: editingId ? undefined : "draft", // New listings need admin validation
     };
 
     if (editingId) {
       await supabase.from("vsi_listings").update(payload).eq("id", editingId);
     } else {
       await supabase.from("vsi_listings").insert(payload);
+      // Notify admin of new listing
+      fetch("/api/email", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "newListing", listingTitle: f.title, email: f.contactEmail }) }).catch(() => {});
     }
     setF({
       title: "", description: "", url: "", category: "vitrine",
