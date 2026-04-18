@@ -22,8 +22,9 @@ interface Listing {
 }
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
-  draft: { label: "Brouillon", color: "bg-zinc-700 text-zinc-300" },
-  published: { label: "Publié", color: "bg-emerald-500/20 text-emerald-400" },
+  draft: { label: "En attente", color: "bg-yellow-500/20 text-yellow-400" },
+  published: { label: "Validé", color: "bg-emerald-500/20 text-emerald-400" },
+  rejected: { label: "Refusé", color: "bg-red-500/20 text-red-400" },
   sold: { label: "Vendu", color: "bg-blue-500/20 text-blue-400" },
   archived: { label: "Archivé", color: "bg-neutral-500/20 text-neutral-400" },
 };
@@ -166,12 +167,12 @@ export default function Admin() {
             <p className="text-2xl font-bold">{listings.length}</p>
           </div>
           <div className="rounded-xl border border-white/5 bg-[#111] p-4">
-            <p className="text-[10px] text-neutral-500 mb-1">Publiées</p>
-            <p className="text-2xl font-bold text-emerald-400">{listings.filter((l) => l.status === "published").length}</p>
+            <p className="text-[10px] text-neutral-500 mb-1">En attente</p>
+            <p className="text-2xl font-bold text-yellow-400">{listings.filter((l) => l.status === "draft").length}</p>
           </div>
           <div className="rounded-xl border border-white/5 bg-[#111] p-4">
-            <p className="text-[10px] text-neutral-500 mb-1">Vendues</p>
-            <p className="text-2xl font-bold text-blue-400">{listings.filter((l) => l.status === "sold").length}</p>
+            <p className="text-[10px] text-neutral-500 mb-1">Publiées</p>
+            <p className="text-2xl font-bold text-emerald-400">{listings.filter((l) => l.status === "published").length}</p>
           </div>
         </div>
 
@@ -205,13 +206,16 @@ export default function Admin() {
                       {l.contact_email} · {l.views} vues · {timeAgo(l.created_at)}
                     </div>
                     <div className="flex gap-1 flex-wrap justify-end">
-                      {l.status === "draft" && (
-                        <button onClick={() => updateListingStatus(l.id, "published")} className="rounded-lg bg-emerald-500/20 px-2 py-1 text-[10px] font-medium text-emerald-400">Publier</button>
+                      {(l.status === "draft" || l.status === "rejected") && (
+                        <button onClick={() => updateListingStatus(l.id, "published")} className="rounded-lg bg-emerald-500/20 px-2 py-1 text-[10px] font-medium text-emerald-400">✅ Valider</button>
+                      )}
+                      {(l.status === "draft") && (
+                        <button onClick={() => updateListingStatus(l.id, "rejected")} className="rounded-lg bg-orange-500/20 px-2 py-1 text-[10px] font-medium text-orange-400">❌ Refuser</button>
                       )}
                       {l.status === "published" && (
                         <button onClick={() => updateListingStatus(l.id, "archived")} className="rounded-lg bg-neutral-500/20 px-2 py-1 text-[10px] font-medium text-neutral-400">Archiver</button>
                       )}
-                      <button onClick={() => deleteListing(l.id)} className="rounded-lg bg-red-500/20 px-2 py-1 text-[10px] font-medium text-red-400">Supprimer</button>
+                      <button onClick={() => { if (confirm("Supprimer cette annonce ?")) deleteListing(l.id); }} className="rounded-lg bg-red-500/20 px-2 py-1 text-[10px] font-medium text-red-400">Supprimer</button>
                     </div>
                   </div>
                 </div>
