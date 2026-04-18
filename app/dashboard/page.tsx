@@ -23,16 +23,16 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   draft: { label: "Brouillon", color: "bg-zinc-700 text-zinc-300" },
-  published: { label: "Publié", color: "bg-emerald-500/20 text-emerald-400" },
+  published: { label: "Publié", color: "bg-emerald-100 text-emerald-400" },
   sold: { label: "Vendu", color: "bg-blue-500/20 text-blue-400" },
-  archived: { label: "Archivé", color: "bg-neutral-500/20 text-neutral-400" },
+  archived: { label: "Archivé", color: "bg-neutral-500/20 text-gray-600" },
 };
 
 function formatCHF(n: number) {
   return n?.toLocaleString("fr-CH", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || "—";
 }
 
-const inputClass = "w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-neutral-500 outline-none focus:border-emerald-500/50";
+const inputClass = "w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 text-sm text-gray-900 placeholder-neutral-500 outline-none focus:border-emerald-500/50";
 
 export default function Dashboard() {
   const supabase = createClient();
@@ -234,12 +234,12 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen pb-20">
-      <header className="sticky top-0 z-40 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-4">
           <Link href="/" className="text-lg font-bold">Vente<span className="text-emerald-400">SiteInternet</span>.ch</Link>
           <div className="flex items-center gap-4">
-            <span className="hidden sm:block text-xs text-neutral-500">{user?.email}</span>
-            <button onClick={logout} className="text-sm text-neutral-400 hover:text-white">Déconnexion</button>
+            <span className="hidden sm:block text-xs text-gray-500">{user?.email}</span>
+            <button onClick={logout} className="text-sm text-gray-600 hover:text-gray-900">Déconnexion</button>
           </div>
         </div>
       </header>
@@ -249,7 +249,7 @@ export default function Dashboard() {
           <h1 className="text-xl sm:text-2xl font-bold">Mon espace vendeur</h1>
           <button
             onClick={() => { if (view === "list") { setEditingId(null); setPhotos([]); setView("create"); } else { setView("list"); } setStep(1); }}
-            className="rounded-full bg-emerald-500 px-4 sm:px-5 py-2 text-sm font-semibold text-white hover:bg-emerald-600"
+            className="rounded-full bg-emerald-500 px-4 sm:px-5 py-2 text-sm font-semibold text-gray-900 hover:bg-emerald-600"
           >
             {view === "list" ? "+ Nouvelle annonce" : "← Mes annonces"}
           </button>
@@ -264,11 +264,11 @@ export default function Dashboard() {
                 <div key={s} className={`h-1.5 flex-1 rounded-full transition-all ${step >= s ? "bg-emerald-500" : "bg-white/10"}`} />
               ))}
             </div>
-            <p className="text-xs text-neutral-500">{editingId ? "Modification" : "Nouvelle annonce"} — Étape {step}/4</p>
+            <p className="text-xs text-gray-500">{editingId ? "Modification" : "Nouvelle annonce"} — Étape {step}/4</p>
 
             {/* Step 1: Infos de base */}
             {step === 1 && (
-              <div className="rounded-xl border border-white/5 bg-[#111] p-5 space-y-4">
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 space-y-4">
                 <h2 className="text-sm font-semibold text-emerald-400">1. Informations générales</h2>
                 <input type="text" value={f.title} onChange={(e) => updateF("title", e.target.value)} placeholder="Titre de l'annonce *" className={inputClass} />
                 <textarea value={f.description} onChange={(e) => updateF("description", e.target.value)} placeholder="Décrivez votre site en détail : ce qu'il fait, son historique, ses points forts..." rows={5} className={inputClass + " resize-none"} />
@@ -287,19 +287,19 @@ export default function Dashboard() {
                 </div>
                 {/* Photos */}
                 <div>
-                  <label className="block text-[10px] text-neutral-500 mb-2">Photos / Screenshots</label>
+                  <label className="block text-[10px] text-gray-500 mb-2">Photos / Screenshots</label>
                   {photos.length > 0 && (
                     <div className="grid grid-cols-3 gap-2 mb-3">
                       {photos.map((url, i) => (
                         <div key={i} className="relative group">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={url} alt={`Photo ${i + 1}`} className="w-full h-24 object-cover rounded-lg border border-white/10" />
-                          <button onClick={() => removePhoto(i)} className="absolute top-1 right-1 h-5 w-5 flex items-center justify-center rounded-full bg-red-500 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
+                          <img src={url} alt={`Photo ${i + 1}`} className="w-full h-24 object-cover rounded-lg border border-gray-300" />
+                          <button onClick={() => removePhoto(i)} className="absolute top-1 right-1 h-5 w-5 flex items-center justify-center rounded-full bg-red-500 text-gray-900 text-xs opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
                         </div>
                       ))}
                     </div>
                   )}
-                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-dashed border-white/10 p-4 text-sm text-neutral-500 hover:border-emerald-500/30 hover:text-emerald-400 transition-all">
+                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-4 text-sm text-gray-500 hover:border-emerald-300 hover:text-emerald-400 transition-all">
                     {uploadingPhotos ? "Upload en cours..." : "+ Ajouter des photos"}
                     <input type="file" accept="image/*" multiple onChange={handlePhotoUpload} className="hidden" disabled={uploadingPhotos} />
                   </label>
@@ -309,67 +309,67 @@ export default function Dashboard() {
 
             {/* Step 2: Chiffres */}
             {step === 2 && (
-              <div className="rounded-xl border border-white/5 bg-[#111] p-5 space-y-4">
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 space-y-4">
                 <h2 className="text-sm font-semibold text-emerald-400">2. Chiffres clés & Financiers</h2>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">Prix de vente (CHF)</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">Prix de vente (CHF)</label>
                     <input type="number" value={f.price} onChange={(e) => updateF("price", e.target.value)} placeholder="Ex: 15000" className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">CA mensuel (CHF)</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">CA mensuel (CHF)</label>
                     <input type="number" value={f.monthlyRevenue} onChange={(e) => updateF("monthlyRevenue", e.target.value)} placeholder="Ex: 2000" className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">CA HT 12 derniers mois (CHF)</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">CA HT 12 derniers mois (CHF)</label>
                     <input type="number" value={f.yearlyRevenue} onChange={(e) => updateF("yearlyRevenue", e.target.value)} placeholder="Ex: 24000" className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">CA HT année N-1 (CHF)</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">CA HT année N-1 (CHF)</label>
                     <input type="number" value={f.yearlyRevenueN1} onChange={(e) => updateF("yearlyRevenueN1", e.target.value)} placeholder="Ex: 20000" className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">CA HT année N-2 (CHF)</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">CA HT année N-2 (CHF)</label>
                     <input type="number" value={f.yearlyRevenueN2} onChange={(e) => updateF("yearlyRevenueN2", e.target.value)} placeholder="Ex: 15000" className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">Charges mensuelles (CHF)</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">Charges mensuelles (CHF)</label>
                     <input type="number" value={f.monthlyCosts} onChange={(e) => updateF("monthlyCosts", e.target.value)} placeholder="Ex: 500" className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">Bénéfice net mensuel (CHF)</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">Bénéfice net mensuel (CHF)</label>
                     <input type="number" value={f.monthlyProfit} onChange={(e) => updateF("monthlyProfit", e.target.value)} placeholder="Ex: 1500" className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">Marge (%)</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">Marge (%)</label>
                     <input type="number" value={f.marginPercent} onChange={(e) => updateF("marginPercent", e.target.value)} placeholder="Ex: 40" className={inputClass} />
                   </div>
                 </div>
-                <h3 className="text-xs font-semibold text-neutral-500 pt-2">Trafic & Audience</h3>
+                <h3 className="text-xs font-semibold text-gray-500 pt-2">Trafic & Audience</h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">Visiteurs/mois</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">Visiteurs/mois</label>
                     <input type="number" value={f.monthlyTraffic} onChange={(e) => updateF("monthlyTraffic", e.target.value)} placeholder="Ex: 5000" className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">Nombre de clients</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">Nombre de clients</label>
                     <input type="number" value={f.nbClients} onChange={(e) => updateF("nbClients", e.target.value)} placeholder="Ex: 200" className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">Abonnés email</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">Abonnés email</label>
                     <input type="number" value={f.emailSubscribers} onChange={(e) => updateF("emailSubscribers", e.target.value)} placeholder="Ex: 500" className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">Followers réseaux sociaux</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">Followers réseaux sociaux</label>
                     <input type="number" value={f.socialFollowers} onChange={(e) => updateF("socialFollowers", e.target.value)} placeholder="Ex: 2000" className={inputClass} />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[10px] text-neutral-500 mb-1">Sources de trafic</label>
+                  <label className="block text-[10px] text-gray-500 mb-1">Sources de trafic</label>
                   <input type="text" value={f.trafficSources} onChange={(e) => updateF("trafficSources", e.target.value)} placeholder="Ex: SEO 60%, Pub 20%, Direct 15%, Réseaux 5%" className={inputClass} />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-neutral-500 mb-1">Mots-clés principaux</label>
+                  <label className="block text-[10px] text-gray-500 mb-1">Mots-clés principaux</label>
                   <input type="text" value={f.mainKeywords} onChange={(e) => updateF("mainKeywords", e.target.value)} placeholder="Ex: chaussettes fun, chaussettes originales suisse" className={inputClass} />
                 </div>
               </div>
@@ -377,10 +377,10 @@ export default function Dashboard() {
 
             {/* Step 3: Business model */}
             {step === 3 && (
-              <div className="rounded-xl border border-white/5 bg-[#111] p-5 space-y-4">
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 space-y-4">
                 <h2 className="text-sm font-semibold text-emerald-400">3. Business model</h2>
                 <div>
-                  <label className="block text-[10px] text-neutral-500 mb-1">Modèle économique</label>
+                  <label className="block text-[10px] text-gray-500 mb-1">Modèle économique</label>
                   <textarea value={f.businessModel} onChange={(e) => updateF("businessModel", e.target.value)} placeholder="Comment le site génère-t-il des revenus ? (abonnements, vente de produits, publicité, affiliation...)" rows={3} className={inputClass + " resize-none"} />
                 </div>
                 <div className="flex items-center gap-3">
@@ -390,32 +390,32 @@ export default function Dashboard() {
                   >
                     <div className={`h-5 w-5 rounded-full bg-white shadow transition-transform ${f.hasStock ? "translate-x-5" : "translate-x-0.5"}`} />
                   </button>
-                  <span className="text-sm text-neutral-400">Vente avec stock</span>
+                  <span className="text-sm text-gray-600">Vente avec stock</span>
                 </div>
                 {f.hasStock && (
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">Valeur du stock (CHF)</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">Valeur du stock (CHF)</label>
                     <input type="number" value={f.stockValue} onChange={(e) => updateF("stockValue", e.target.value)} placeholder="Ex: 5000" className={inputClass} />
                   </div>
                 )}
                 <div>
-                  <label className="block text-[10px] text-neutral-500 mb-1">Nombre de fournisseurs</label>
+                  <label className="block text-[10px] text-gray-500 mb-1">Nombre de fournisseurs</label>
                   <input type="number" value={f.nbSuppliers} onChange={(e) => updateF("nbSuppliers", e.target.value)} placeholder="Ex: 3" className={inputClass} />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-neutral-500 mb-1">Concurrents principaux</label>
+                  <label className="block text-[10px] text-gray-500 mb-1">Concurrents principaux</label>
                   <textarea value={f.competitors} onChange={(e) => updateF("competitors", e.target.value)} placeholder="Listez les concurrents directs et votre avantage par rapport à eux" rows={3} className={inputClass + " resize-none"} />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-neutral-500 mb-1">Raison de la vente</label>
+                  <label className="block text-[10px] text-gray-500 mb-1">Raison de la vente</label>
                   <textarea value={f.reasonForSale} onChange={(e) => updateF("reasonForSale", e.target.value)} placeholder="Pourquoi vendez-vous ce site ?" rows={2} className={inputClass + " resize-none"} />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-neutral-500 mb-1">Potentiel de croissance</label>
+                  <label className="block text-[10px] text-gray-500 mb-1">Potentiel de croissance</label>
                   <textarea value={f.growthPotential} onChange={(e) => updateF("growthPotential", e.target.value)} placeholder="Quelles opportunités de développement voyez-vous ?" rows={2} className={inputClass + " resize-none"} />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-neutral-500 mb-1">Ce qui est inclus dans la vente</label>
+                  <label className="block text-[10px] text-gray-500 mb-1">Ce qui est inclus dans la vente</label>
                   <textarea value={f.includedInSale} onChange={(e) => updateF("includedInSale", e.target.value)} placeholder="Domaine, code source, base clients, comptes réseaux sociaux, stock..." rows={2} className={inputClass + " resize-none"} />
                 </div>
               </div>
@@ -423,28 +423,28 @@ export default function Dashboard() {
 
             {/* Step 4: Contact */}
             {step === 4 && (
-              <div className="rounded-xl border border-white/5 bg-[#111] p-5 space-y-4">
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 space-y-4">
                 <h2 className="text-sm font-semibold text-emerald-400">4. Vos coordonnées</h2>
-                <p className="text-xs text-neutral-500">Ces informations seront visibles par les acheteurs potentiels.</p>
+                <p className="text-xs text-gray-500">Ces informations seront visibles par les acheteurs potentiels.</p>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">Email de contact</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">Email de contact</label>
                     <input type="email" value={f.contactEmail} onChange={(e) => updateF("contactEmail", e.target.value)} placeholder="votre@email.com" className={inputClass} />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-neutral-500 mb-1">WhatsApp</label>
+                    <label className="block text-[10px] text-gray-500 mb-1">WhatsApp</label>
                     <input type="tel" value={f.contactWhatsapp} onChange={(e) => updateF("contactWhatsapp", e.target.value)} placeholder="+41 79 000 00 00" className={inputClass} />
                   </div>
                 </div>
 
                 {/* Summary */}
-                <div className="mt-4 rounded-lg bg-white/5 p-4 space-y-2">
-                  <h3 className="text-xs font-semibold text-neutral-400">Résumé de votre annonce</h3>
+                <div className="mt-4 rounded-lg bg-gray-100 p-4 space-y-2">
+                  <h3 className="text-xs font-semibold text-gray-600">Résumé de votre annonce</h3>
                   <p className="text-sm font-bold">{f.title || "—"}</p>
                   <div className="grid grid-cols-3 gap-2 text-xs">
-                    <div><span className="text-neutral-500">Catégorie :</span> {CATEGORY_LABELS[f.category]}</div>
-                    {f.price && <div><span className="text-neutral-500">Prix :</span> <span className="text-emerald-400 font-bold">{formatCHF(parseFloat(f.price))} CHF</span></div>}
-                    {f.monthlyRevenue && <div><span className="text-neutral-500">CA/mois :</span> {formatCHF(parseFloat(f.monthlyRevenue))} CHF</div>}
+                    <div><span className="text-gray-500">Catégorie :</span> {CATEGORY_LABELS[f.category]}</div>
+                    {f.price && <div><span className="text-gray-500">Prix :</span> <span className="text-emerald-400 font-bold">{formatCHF(parseFloat(f.price))} CHF</span></div>}
+                    {f.monthlyRevenue && <div><span className="text-gray-500">CA/mois :</span> {formatCHF(parseFloat(f.monthlyRevenue))} CHF</div>}
                   </div>
                 </div>
               </div>
@@ -453,7 +453,7 @@ export default function Dashboard() {
             {/* Navigation */}
             <div className="flex gap-3">
               {step > 1 && (
-                <button onClick={() => setStep(step - 1)} className="flex-1 rounded-lg border border-white/10 py-3 text-sm font-medium text-neutral-400 hover:bg-white/5">
+                <button onClick={() => setStep(step - 1)} className="flex-1 rounded-lg border border-gray-300 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100">
                   ← Précédent
                 </button>
               )}
@@ -461,7 +461,7 @@ export default function Dashboard() {
                 <button
                   onClick={() => setStep(step + 1)}
                   disabled={step === 1 && !f.title.trim()}
-                  className="flex-1 rounded-lg bg-emerald-500 py-3 text-sm font-semibold text-white hover:bg-emerald-600 disabled:opacity-50"
+                  className="flex-1 rounded-lg bg-emerald-500 py-3 text-sm font-semibold text-gray-900 hover:bg-emerald-600 disabled:opacity-50"
                 >
                   Suivant →
                 </button>
@@ -469,7 +469,7 @@ export default function Dashboard() {
                 <button
                   onClick={createListing}
                   disabled={!f.title.trim()}
-                  className="flex-1 rounded-lg bg-emerald-500 py-3 text-sm font-semibold text-white hover:bg-emerald-600 disabled:opacity-50"
+                  className="flex-1 rounded-lg bg-emerald-500 py-3 text-sm font-semibold text-gray-900 hover:bg-emerald-600 disabled:opacity-50"
                 >
                   {editingId ? "Enregistrer les modifications" : "Publier l'annonce"}
                 </button>
@@ -482,11 +482,11 @@ export default function Dashboard() {
         {view === "list" && (
           <div className="space-y-3">
             {listings.length === 0 ? (
-              <div className="rounded-2xl border border-white/5 bg-[#111] p-12 text-center">
+              <div className="rounded-2xl border border-gray-200 bg-gray-50 p-12 text-center">
                 <div className="text-4xl mb-3">📋</div>
                 <p className="text-lg font-semibold">Aucune annonce</p>
-                <p className="mt-2 text-sm text-neutral-500">Créez votre première annonce pour commencer à vendre.</p>
-                <button onClick={() => setView("create")} className="mt-4 rounded-full bg-emerald-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-emerald-600">
+                <p className="mt-2 text-sm text-gray-500">Créez votre première annonce pour commencer à vendre.</p>
+                <button onClick={() => setView("create")} className="mt-4 rounded-full bg-emerald-500 px-6 py-2.5 text-sm font-semibold text-gray-900 hover:bg-emerald-600">
                   Créer une annonce
                 </button>
               </div>
@@ -494,28 +494,28 @@ export default function Dashboard() {
               listings.map((listing) => {
                 const st = STATUS_LABELS[listing.status] || STATUS_LABELS.draft;
                 return (
-                  <div key={listing.id} className="rounded-xl border border-white/5 bg-[#111] p-5">
+                  <div key={listing.id} className="rounded-xl border border-gray-200 bg-gray-50 p-5">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3 flex-wrap">
                         <h3 className="text-sm font-bold">{listing.title}</h3>
                         <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${st.color}`}>{st.label}</span>
-                        <span className="text-[10px] text-neutral-500">{CATEGORY_LABELS[listing.category]}</span>
+                        <span className="text-[10px] text-gray-500">{CATEGORY_LABELS[listing.category]}</span>
                       </div>
                       <span className="text-sm font-bold text-emerald-400">{listing.price > 0 ? `${formatCHF(listing.price)} CHF` : "Sur demande"}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-neutral-500">{listing.views} vues</span>
+                      <span className="text-xs text-gray-500">{listing.views} vues</span>
                       <div className="flex gap-1 flex-wrap justify-end">
                         {listing.status === "draft" && (
-                          <button onClick={() => updateStatus(listing.id, "published")} className="rounded-lg bg-emerald-500/20 px-2 py-1 text-[10px] font-medium text-emerald-400 hover:bg-emerald-500/30">Publier</button>
+                          <button onClick={() => updateStatus(listing.id, "published")} className="rounded-lg bg-emerald-100 px-2 py-1 text-[10px] font-medium text-emerald-400 hover:bg-emerald-500/30">Publier</button>
                         )}
                         {listing.status === "published" && (
                           <>
                             <button onClick={() => updateStatus(listing.id, "sold")} className="rounded-lg bg-blue-500/20 px-2 py-1 text-[10px] font-medium text-blue-400 hover:bg-blue-500/30">Vendu</button>
-                            <button onClick={() => updateStatus(listing.id, "archived")} className="rounded-lg bg-neutral-500/20 px-2 py-1 text-[10px] font-medium text-neutral-400 hover:bg-neutral-500/30">Archiver</button>
+                            <button onClick={() => updateStatus(listing.id, "archived")} className="rounded-lg bg-neutral-500/20 px-2 py-1 text-[10px] font-medium text-gray-600 hover:bg-neutral-500/30">Archiver</button>
                           </>
                         )}
-                        <button onClick={() => editListing(listing.id)} className="rounded-lg bg-white/5 px-2 py-1 text-[10px] font-medium text-neutral-400 hover:bg-white/10">Modifier</button>
+                        <button onClick={() => editListing(listing.id)} className="rounded-lg bg-gray-100 px-2 py-1 text-[10px] font-medium text-gray-600 hover:bg-white/10">Modifier</button>
                         <button onClick={() => deleteListing(listing.id)} className="rounded-lg bg-red-500/20 px-2 py-1 text-[10px] font-medium text-red-400 hover:bg-red-500/30">Supprimer</button>
                       </div>
                     </div>

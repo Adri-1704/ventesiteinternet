@@ -95,7 +95,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen">
       {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-xl">
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm shadow-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <span className="text-base sm:text-lg font-bold">
             Vente<span className="text-emerald-400">Site</span>
@@ -103,10 +103,10 @@ export default async function Home() {
             <span className="sm:hidden">.ch</span>
           </span>
           <div className="flex items-center gap-3 sm:gap-6">
-            <a href="#annonces" className="hidden sm:block text-sm text-neutral-400 hover:text-white">Annonces</a>
-            <a href="#pricing" className="hidden sm:block text-sm text-neutral-400 hover:text-white">Tarifs</a>
-            <Link href="/auth/login" className="hidden sm:block text-sm text-neutral-400 hover:text-white">Connexion</Link>
-            <Link href="/auth/signup" className="rounded-full bg-emerald-500 px-4 sm:px-5 py-2 text-xs sm:text-sm font-semibold text-white hover:bg-emerald-600">
+            <a href="#annonces" className="hidden sm:block text-sm text-gray-600 hover:text-gray-900">Annonces</a>
+            <a href="#pricing" className="hidden sm:block text-sm text-gray-600 hover:text-gray-900">Tarifs</a>
+            <Link href="/auth/login" className="hidden sm:block text-sm text-gray-600 hover:text-gray-900">Connexion</Link>
+            <Link href="/auth/signup" className="rounded-full bg-emerald-500 px-4 sm:px-5 py-2 text-xs sm:text-sm font-semibold text-gray-900 hover:bg-emerald-600">
               Vendre
             </Link>
           </div>
@@ -115,11 +115,11 @@ export default async function Home() {
 
       {/* Hero */}
       <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden pt-20 px-6">
-        <div className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 h-[600px] w-[600px] rounded-full bg-emerald-500/10 blur-3xl" />
-        <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-blue-500/8 blur-3xl" />
+        <div className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 h-[600px] w-[600px] rounded-full bg-emerald-50 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-blue-50 blur-3xl" />
 
         <div className="relative mx-auto max-w-4xl text-center">
-          <div className="mb-6 inline-block rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm text-emerald-400">
+          <div className="mb-6 inline-block rounded-full border border-emerald-300 bg-emerald-50 px-4 py-1.5 text-sm text-emerald-400">
             La marketplace suisse pour les sites web
           </div>
           <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-7xl">
@@ -129,20 +129,20 @@ export default async function Home() {
               des sites web en Suisse
             </span>
           </h1>
-          <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-neutral-400 md:text-xl">
+          <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-gray-600 md:text-xl">
             Sites vitrine, e-commerces, SaaS et noms de domaine.
             Trouvez votre prochain projet digital ou vendez le vôtre.
           </p>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
               href="/annonces"
-              className="w-full rounded-full bg-white px-8 py-3.5 text-base font-semibold text-black hover:bg-neutral-200 sm:w-auto"
+              className="w-full rounded-full bg-gray-900 px-8 py-3.5 text-base font-semibold text-white hover:bg-gray-800 sm:w-auto"
             >
               Parcourir les annonces
             </Link>
             <Link
               href="/auth/signup"
-              className="w-full rounded-full border border-emerald-500/50 px-8 py-3.5 text-base font-semibold text-emerald-400 hover:bg-emerald-500/10 sm:w-auto"
+              className="w-full rounded-full border border-emerald-400 px-8 py-3.5 text-base font-semibold text-emerald-400 hover:bg-emerald-50 sm:w-auto"
             >
               Vendre mon site
             </Link>
@@ -151,7 +151,7 @@ export default async function Home() {
       </section>
 
       {/* Categories */}
-      <section id="annonces" className="border-t border-white/5 px-6 py-16">
+      <section id="annonces" className="border-t border-gray-200 px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">Catégories</h2>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -159,11 +159,11 @@ export default async function Home() {
               <Link
                 key={cat.slug}
                 href={`/annonces?cat=${cat.slug}`}
-                className="group rounded-2xl border border-white/5 bg-[#111] p-6 text-center transition-all hover:border-emerald-500/30 hover:bg-[#151515]"
+                className="group rounded-2xl border border-gray-200 bg-gray-50 p-6 text-center transition-all hover:border-emerald-300 hover:bg-gray-100"
               >
                 <div className="mb-3 text-4xl">{cat.icon}</div>
-                <h3 className="text-sm font-semibold text-white">{cat.name}</h3>
-                <p className="mt-1 text-xs text-neutral-500">{cat.count} annonces</p>
+                <h3 className="text-sm font-semibold text-gray-900">{cat.name}</h3>
+                <p className="mt-1 text-xs text-gray-500">{cat.count} annonces</p>
               </Link>
             ))}
           </div>
@@ -176,15 +176,15 @@ export default async function Home() {
           <h2 className="mb-4 text-center text-3xl font-bold md:text-4xl">
             Pourquoi <span className="text-emerald-400">VenteSiteInternet</span> ?
           </h2>
-          <p className="mx-auto mb-12 max-w-2xl text-center text-neutral-400">
+          <p className="mx-auto mb-12 max-w-2xl text-center text-gray-600">
             La première marketplace suisse dédiée à l&apos;achat-vente de sites web.
           </p>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {features.map((f) => (
-              <div key={f.title} className="rounded-2xl border border-white/5 bg-[#111] p-6 transition-all hover:border-white/10">
+              <div key={f.title} className="rounded-2xl border border-gray-200 bg-gray-50 p-6 transition-all hover:border-gray-300">
                 <div className="mb-4 text-3xl">{f.icon}</div>
                 <h3 className="mb-2 text-lg font-semibold">{f.title}</h3>
-                <p className="text-sm text-neutral-400">{f.description}</p>
+                <p className="text-sm text-gray-600">{f.description}</p>
               </div>
             ))}
           </div>
@@ -192,12 +192,12 @@ export default async function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="border-t border-white/5 px-6 py-16">
+      <section id="pricing" className="border-t border-gray-200 px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-4 text-center text-3xl font-bold md:text-4xl">
             Tarifs <span className="text-emerald-400">vendeurs</span>
           </h2>
-          <p className="mx-auto mb-12 max-w-2xl text-center text-neutral-400">
+          <p className="mx-auto mb-12 max-w-2xl text-center text-gray-600">
             Gratuit pour les acheteurs. Un seul abonnement tout inclus pour les vendeurs.
           </p>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -206,22 +206,22 @@ export default async function Home() {
                 key={plan.name}
                 className={`relative rounded-2xl border p-6 transition-all ${
                   "popular" in plan && plan.popular
-                    ? "border-emerald-500/50 bg-gradient-to-b from-emerald-500/10 to-transparent"
-                    : "border-white/5 bg-[#111]"
+                    ? "border-emerald-400 bg-gradient-to-b from-emerald-500/10 to-transparent"
+                    : "border-gray-200 bg-gray-50"
                 }`}
               >
                 {plan.badge && (
-                  <span className="absolute -top-3 right-4 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white">
+                  <span className="absolute -top-3 right-4 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-gray-900">
                     {plan.badge}
                   </span>
                 )}
-                <div className="mb-1 text-sm font-medium text-neutral-400">{plan.name}</div>
+                <div className="mb-1 text-sm font-medium text-gray-600">{plan.name}</div>
                 <div className="mb-1 flex items-baseline gap-1">
                   <span className="text-3xl font-bold">{formatCHF(plan.price)}</span>
-                  <span className="text-sm text-neutral-500">CHF{plan.period}</span>
+                  <span className="text-sm text-gray-500">CHF{plan.period}</span>
                 </div>
-                <p className="mb-4 text-xs text-neutral-500">soit {formatCHF(plan.perMonth)} CHF/mois</p>
-                <ul className="mb-6 space-y-2 text-sm text-neutral-400">
+                <p className="mb-4 text-xs text-gray-500">soit {formatCHF(plan.perMonth)} CHF/mois</p>
+                <ul className="mb-6 space-y-2 text-sm text-gray-600">
                   <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Annonces illimitées</li>
                   <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Contact direct acheteurs</li>
                   <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Statistiques de vues</li>
@@ -231,8 +231,8 @@ export default async function Home() {
                   href="/auth/signup"
                   className={`block w-full rounded-full py-2.5 text-center text-sm font-semibold transition-colors ${
                     "popular" in plan && plan.popular
-                      ? "bg-emerald-500 text-white hover:bg-emerald-600"
-                      : "border border-white/10 text-white hover:bg-white/5"
+                      ? "bg-emerald-500 text-gray-900 hover:bg-emerald-600"
+                      : "border border-gray-300 text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   Commencer
@@ -254,11 +254,11 @@ export default async function Home() {
               { step: "3", title: "Concluez la vente", desc: "Négociez et finalisez la transaction entre vous, sans commission." },
             ].map((s) => (
               <div key={s.step} className="text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/20 text-lg font-bold text-emerald-400">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-lg font-bold text-emerald-400">
                   {s.step}
                 </div>
                 <h3 className="mb-2 text-lg font-semibold">{s.title}</h3>
-                <p className="text-sm text-neutral-400">{s.desc}</p>
+                <p className="text-sm text-gray-600">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -266,19 +266,19 @@ export default async function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="border-t border-white/5 px-6 py-16">
+      <section className="border-t border-gray-200 px-6 py-16">
         <div className="mx-auto max-w-3xl">
           <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">Questions fréquentes</h2>
           <div className="space-y-3">
             {faqs.map((faq) => (
-              <details key={faq.q} className="group rounded-xl border border-white/5 bg-[#111]">
+              <details key={faq.q} className="group rounded-xl border border-gray-200 bg-gray-50">
                 <summary className="flex cursor-pointer items-center justify-between px-6 py-4">
                   <span className="pr-4 font-medium">{faq.q}</span>
-                  <svg className="h-5 w-5 shrink-0 text-neutral-500 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="h-5 w-5 shrink-0 text-gray-500 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <div className="px-6 pb-4 text-sm text-neutral-400">{faq.a}</div>
+                <div className="px-6 pb-4 text-sm text-gray-600">{faq.a}</div>
               </details>
             ))}
           </div>
@@ -305,16 +305,16 @@ export default async function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-8">
+      <footer className="border-t border-gray-200 py-8">
         <div className="mx-auto max-w-6xl px-6">
           <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between">
             <span className="text-lg font-bold">Vente<span className="text-emerald-400">SiteInternet</span>.ch</span>
             <div className="flex items-center gap-6">
-              <a href="https://wa.me/41794517496" target="_blank" rel="noopener noreferrer" className="text-sm text-neutral-500 hover:text-white">WhatsApp</a>
-              <a href="mailto:contact@ventesiteinternet.ch" className="text-sm text-neutral-500 hover:text-white">Contact</a>
+              <a href="https://wa.me/41794517496" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-gray-900">WhatsApp</a>
+              <a href="mailto:contact@ventesiteinternet.ch" className="text-sm text-gray-500 hover:text-gray-900">Contact</a>
             </div>
           </div>
-          <p className="mt-6 text-center text-xs text-neutral-600">
+          <p className="mt-6 text-center text-xs text-gray-400">
             &copy; {new Date().getFullYear()} VenteSiteInternet.ch — Le Bouveret, Valais, Suisse.
           </p>
         </div>

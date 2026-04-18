@@ -26,17 +26,17 @@ export default function Login() {
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold">Vente<span className="text-emerald-400">SiteInternet</span>.ch</h1>
-          <p className="mt-2 text-sm text-neutral-500">Connectez-vous à votre espace vendeur</p>
+          <p className="mt-2 text-sm text-gray-500">Connectez-vous à votre espace vendeur</p>
         </div>
         <form onSubmit={handleLogin} className="space-y-4">
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="Email" className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder-neutral-500 outline-none focus:border-emerald-500/50" />
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Mot de passe" className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder-neutral-500 outline-none focus:border-emerald-500/50" />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="Email" className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-base text-gray-900 placeholder-neutral-500 outline-none focus:border-emerald-500/50" />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Mot de passe" className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-base text-gray-900 placeholder-neutral-500 outline-none focus:border-emerald-500/50" />
           {error && <p className="text-sm text-red-400">{error}</p>}
-          <button type="submit" disabled={loading} className="w-full rounded-lg bg-emerald-500 py-3 text-sm font-semibold text-white hover:bg-emerald-600 disabled:opacity-50">
+          <button type="submit" disabled={loading} className="w-full rounded-lg bg-emerald-500 py-3 text-sm font-semibold text-gray-900 hover:bg-emerald-600 disabled:opacity-50">
             {loading ? "Connexion..." : "Se connecter"}
           </button>
         </form>
-        <p className="mt-6 text-center text-sm text-neutral-500">
+        <p className="mt-6 text-center text-sm text-gray-500">
           Pas encore de compte ? <Link href="/auth/signup" className="font-semibold text-emerald-400">Créer un compte</Link>
         </p>
       </div>

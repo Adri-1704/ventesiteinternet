@@ -79,14 +79,14 @@ function AnnoncesContent() {
   return (
     <div className="min-h-screen pb-20">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="text-lg font-bold">
             Vente<span className="text-emerald-400">SiteInternet</span>.ch
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/auth/login" className="text-sm text-neutral-400 hover:text-white">Connexion</Link>
-            <Link href="/auth/signup" className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-600">Vendre</Link>
+            <Link href="/auth/login" className="text-sm text-gray-600 hover:text-gray-900">Connexion</Link>
+            <Link href="/auth/signup" className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-emerald-600">Vendre</Link>
           </div>
         </div>
       </header>
@@ -97,7 +97,7 @@ function AnnoncesContent() {
         {/* Filters */}
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="relative flex-1">
-            <svg className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
@@ -105,7 +105,7 @@ function AnnoncesContent() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Rechercher..."
-              className="w-full rounded-lg border border-white/10 bg-white/5 py-2.5 pl-10 pr-4 text-sm text-white placeholder-neutral-500 outline-none focus:border-emerald-500/50"
+              className="w-full rounded-lg border border-gray-300 bg-gray-100 py-2.5 pl-10 pr-4 text-sm text-gray-900 placeholder-neutral-500 outline-none focus:border-emerald-500/50"
             />
           </div>
           <div className="flex gap-2 overflow-x-auto">
@@ -114,7 +114,7 @@ function AnnoncesContent() {
                 key={cat.slug}
                 onClick={() => setCategory(cat.slug)}
                 className={`shrink-0 rounded-full px-4 py-2 text-xs font-medium transition-all ${
-                  category === cat.slug ? "bg-emerald-500 text-white" : "border border-white/10 text-neutral-400 hover:text-white"
+                  category === cat.slug ? "bg-emerald-500 text-gray-900" : "border border-gray-300 text-gray-600 hover:text-gray-900"
                 }`}
               >
                 {cat.label}
@@ -124,7 +124,7 @@ function AnnoncesContent() {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white outline-none"
+            className="rounded-lg border border-gray-300 bg-gray-100 px-3 py-2.5 text-sm text-gray-900 outline-none"
           >
             <option value="recent">Plus récentes</option>
             <option value="price_asc">Prix croissant</option>
@@ -138,11 +138,11 @@ function AnnoncesContent() {
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
           </div>
         ) : listings.length === 0 ? (
-          <div className="rounded-2xl border border-white/5 bg-[#111] p-12 text-center">
+          <div className="rounded-2xl border border-gray-200 bg-gray-50 p-12 text-center">
             <div className="text-4xl mb-3">🔍</div>
             <p className="text-lg font-semibold">Aucune annonce pour le moment</p>
-            <p className="mt-2 text-sm text-neutral-500">Soyez le premier à publier votre site !</p>
-            <Link href="/auth/signup" className="mt-4 inline-block rounded-full bg-emerald-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-emerald-600">
+            <p className="mt-2 text-sm text-gray-500">Soyez le premier à publier votre site !</p>
+            <Link href="/auth/signup" className="mt-4 inline-block rounded-full bg-emerald-500 px-6 py-2.5 text-sm font-semibold text-gray-900 hover:bg-emerald-600">
               Vendre mon site
             </Link>
           </div>
@@ -152,7 +152,7 @@ function AnnoncesContent() {
               <Link
                 key={listing.id}
                 href={`/annonces/${listing.id}`}
-                className="group rounded-2xl border border-white/5 bg-[#111] overflow-hidden transition-all hover:border-emerald-500/30"
+                className="group rounded-2xl border border-gray-200 bg-gray-50 overflow-hidden transition-all hover:border-emerald-300"
               >
                 {listing.images && listing.images.length > 0 && (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -160,35 +160,35 @@ function AnnoncesContent() {
                 )}
                 <div className="p-6">
                 <div className="mb-3 flex items-center justify-between">
-                  <span className="rounded-full bg-white/5 px-3 py-1 text-[10px] font-medium text-neutral-400">
+                  <span className="rounded-full bg-gray-100 px-3 py-1 text-[10px] font-medium text-gray-600">
                     {CATEGORIES.find((c) => c.slug === listing.category)?.label || listing.category}
                   </span>
-                  <span className="text-[10px] text-neutral-500">{timeAgo(listing.created_at)}</span>
+                  <span className="text-[10px] text-gray-500">{timeAgo(listing.created_at)}</span>
                 </div>
                 <h3 className="mb-2 text-lg font-bold group-hover:text-emerald-400">{listing.title}</h3>
-                <p className="mb-4 text-sm text-neutral-400 line-clamp-2">{listing.description}</p>
+                <p className="mb-4 text-sm text-gray-600 line-clamp-2">{listing.description}</p>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   {listing.price > 0 && (
-                    <div className="rounded-lg bg-white/5 p-2">
-                      <span className="text-neutral-500">Prix</span>
+                    <div className="rounded-lg bg-gray-100 p-2">
+                      <span className="text-gray-500">Prix</span>
                       <p className="font-bold text-emerald-400">{formatCHF(listing.price)} CHF</p>
                     </div>
                   )}
                   {listing.monthly_revenue > 0 && (
-                    <div className="rounded-lg bg-white/5 p-2">
-                      <span className="text-neutral-500">Revenu/mois</span>
+                    <div className="rounded-lg bg-gray-100 p-2">
+                      <span className="text-gray-500">Revenu/mois</span>
                       <p className="font-bold">{formatCHF(listing.monthly_revenue)} CHF</p>
                     </div>
                   )}
                   {listing.monthly_traffic > 0 && (
-                    <div className="rounded-lg bg-white/5 p-2">
-                      <span className="text-neutral-500">Trafic/mois</span>
+                    <div className="rounded-lg bg-gray-100 p-2">
+                      <span className="text-gray-500">Trafic/mois</span>
                       <p className="font-bold">{formatCHF(listing.monthly_traffic)} visites</p>
                     </div>
                   )}
                   {listing.age_years > 0 && (
-                    <div className="rounded-lg bg-white/5 p-2">
-                      <span className="text-neutral-500">Ancienneté</span>
+                    <div className="rounded-lg bg-gray-100 p-2">
+                      <span className="text-gray-500">Ancienneté</span>
                       <p className="font-bold">{listing.age_years} an{listing.age_years > 1 ? "s" : ""}</p>
                     </div>
                   )}
