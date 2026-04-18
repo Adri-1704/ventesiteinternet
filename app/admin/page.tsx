@@ -57,6 +57,10 @@ export default function Admin() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [dark, setDark] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return localStorage.getItem("vsi-admin-theme") !== "light";
+  });
   const [users, setUsers] = useState<User[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
   const [view, setView] = useState<"users" | "listings">("listings");
@@ -123,7 +127,7 @@ export default function Admin() {
       <div className="flex min-h-screen items-center justify-center px-4 bg-[#0a0a0a] text-white">
         <div className="w-full max-w-sm">
           <h1 className="mb-2 text-2xl font-bold text-center">Admin</h1>
-          <p className="mb-6 text-sm text-neutral-500 text-center">VenteSiteInternet.ch</p>
+          <p className="mb-6 text-sm text-gray-500 text-center">VenteSiteInternet.ch</p>
           <form onSubmit={(e) => { e.preventDefault(); login(); }} className="space-y-4">
             <input
               type="password"
@@ -144,13 +148,19 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen pb-20 bg-[#0a0a0a] text-white">
-      <header className="sticky top-0 z-40 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-xl">
+    <div className={`min-h-screen pb-20 ${dark ? "bg-[#0a0a0a] text-white" : "bg-white text-gray-900"}`}>
+      <header className={`sticky top-0 z-40 border-b backdrop-blur-xl ${dark ? "border-white/5 bg-[#0a0a0a]/80" : "border-gray-200 bg-white/80"}`}>
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-4">
           <Link href="/" className="text-lg font-bold">Vente<span className="text-emerald-400">SiteInternet</span>.ch</Link>
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => { const next = !dark; setDark(next); localStorage.setItem("vsi-admin-theme", next ? "dark" : "light"); }}
+              className={`rounded-lg px-3 py-1.5 text-xs font-medium ${dark ? "bg-white/10 text-gray-300 hover:bg-white/20" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+            >
+              {dark ? "☀️ Clair" : "🌙 Sombre"}
+            </button>
             <span className="text-xs text-emerald-400 font-semibold">ADMIN</span>
-            <button onClick={() => { setAuthenticated(false); sessionStorage.removeItem("vsi-admin-auth"); sessionStorage.removeItem("vsi-admin-pwd"); }} className="text-sm text-neutral-400 hover:text-white">Déconnexion</button>
+            <button onClick={() => { setAuthenticated(false); sessionStorage.removeItem("vsi-admin-auth"); sessionStorage.removeItem("vsi-admin-pwd"); }} className={`text-sm ${dark ? "text-neutral-400 hover:text-white" : "text-gray-500 hover:text-gray-900"}`}>Déconnexion</button>
           </div>
         </div>
       </header>
@@ -158,30 +168,30 @@ export default function Admin() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-6">
         {/* Stats */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 mb-6">
-          <div className="rounded-xl border border-white/5 bg-[#111] p-4">
-            <p className="text-[10px] text-neutral-500 mb-1">Utilisateurs</p>
+          <div className={`rounded-xl border p-4 ${dark ? "border-white/5 bg-[#111]" : "border-gray-200 bg-gray-50"}`}>
+            <p className="text-[10px] text-gray-500 mb-1">Utilisateurs</p>
             <p className="text-2xl font-bold">{users.length}</p>
           </div>
-          <div className="rounded-xl border border-white/5 bg-[#111] p-4">
-            <p className="text-[10px] text-neutral-500 mb-1">Annonces totales</p>
+          <div className={`rounded-xl border p-4 ${dark ? "border-white/5 bg-[#111]" : "border-gray-200 bg-gray-50"}`}>
+            <p className="text-[10px] text-gray-500 mb-1">Annonces totales</p>
             <p className="text-2xl font-bold">{listings.length}</p>
           </div>
-          <div className="rounded-xl border border-white/5 bg-[#111] p-4">
-            <p className="text-[10px] text-neutral-500 mb-1">En attente</p>
+          <div className={`rounded-xl border p-4 ${dark ? "border-white/5 bg-[#111]" : "border-gray-200 bg-gray-50"}`}>
+            <p className="text-[10px] text-gray-500 mb-1">En attente</p>
             <p className="text-2xl font-bold text-yellow-400">{listings.filter((l) => l.status === "draft").length}</p>
           </div>
-          <div className="rounded-xl border border-white/5 bg-[#111] p-4">
-            <p className="text-[10px] text-neutral-500 mb-1">Publiées</p>
+          <div className={`rounded-xl border p-4 ${dark ? "border-white/5 bg-[#111]" : "border-gray-200 bg-gray-50"}`}>
+            <p className="text-[10px] text-gray-500 mb-1">Publiées</p>
             <p className="text-2xl font-bold text-emerald-400">{listings.filter((l) => l.status === "published").length}</p>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex rounded-xl bg-[#111] p-1 mb-6 border border-white/5">
-          <button onClick={() => setView("listings")} className={`flex-1 rounded-lg py-2 text-xs font-semibold transition-all ${view === "listings" ? "bg-emerald-500 text-white" : "text-neutral-500"}`}>
+        <div className={`flex rounded-xl p-1 mb-6 border ${dark ? "bg-[#111] border-white/5" : "bg-gray-100 border-gray-200"}`}>
+          <button onClick={() => setView("listings")} className={`flex-1 rounded-lg py-2 text-xs font-semibold transition-all ${view === "listings" ? "bg-emerald-500 text-white" : "text-gray-500"}`}>
             Annonces ({listings.length})
           </button>
-          <button onClick={() => setView("users")} className={`flex-1 rounded-lg py-2 text-xs font-semibold transition-all ${view === "users" ? "bg-emerald-500 text-white" : "text-neutral-500"}`}>
+          <button onClick={() => setView("users")} className={`flex-1 rounded-lg py-2 text-xs font-semibold transition-all ${view === "users" ? "bg-emerald-500 text-white" : "text-gray-500"}`}>
             Utilisateurs ({users.length})
           </button>
         </div>
@@ -192,17 +202,17 @@ export default function Admin() {
             {listings.map((l) => {
               const st = STATUS_LABELS[l.status] || STATUS_LABELS.draft;
               return (
-                <div key={l.id} className="rounded-xl border border-white/5 bg-[#111] p-4">
+                <div key={l.id} className={`rounded-xl border p-4 ${dark ? "border-white/5 bg-[#111]" : "border-gray-200 bg-gray-50"}`}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-sm font-bold">{l.title}</span>
                       <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${st.color}`}>{st.label}</span>
-                      <span className="text-[10px] text-neutral-500">{CATEGORY_LABELS[l.category]}</span>
+                      <span className="text-[10px] text-gray-500">{CATEGORY_LABELS[l.category]}</span>
                     </div>
                     <span className="text-sm font-bold text-emerald-400">{l.price > 0 ? `${formatCHF(l.price)} CHF` : "—"}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <div className="text-xs text-neutral-500">
+                    <div className="text-xs text-gray-500">
                       {l.contact_email} · {l.views} vues · {timeAgo(l.created_at)}
                     </div>
                     <div className="flex gap-1 flex-wrap justify-end">
@@ -228,10 +238,10 @@ export default function Admin() {
         {view === "users" && (
           <div className="space-y-2">
             {users.map((u) => (
-              <div key={u.id} className="rounded-xl border border-white/5 bg-[#111] p-4 flex items-center justify-between">
+              <div key={u.id} className={`rounded-xl border p-4 flex ${dark ? "border-white/5 bg-[#111]" : "border-gray-200 bg-gray-50"}`}  items-center justify-between">
                 <div>
                   <p className="text-sm font-semibold">{u.email}</p>
-                  <p className="text-[10px] text-neutral-500">Inscrit {timeAgo(u.created_at)}</p>
+                  <p className="text-[10px] text-gray-500">Inscrit {timeAgo(u.created_at)}</p>
                 </div>
                 <span className="text-[10px] text-neutral-600 font-mono">{u.id.slice(0, 8)}</span>
               </div>
